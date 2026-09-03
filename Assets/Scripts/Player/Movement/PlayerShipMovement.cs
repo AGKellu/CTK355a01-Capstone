@@ -98,7 +98,7 @@ public class PlayerShipMovement : MonoBehaviour
         transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
         //transform.Rotate(Vector3(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0));
         //transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, RollValue);
-        playerRB.AddRelativeForce(Vector3.forward * ((speed * 20) * Time.deltaTime));
+        playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime));
      
         //transform.position += transform.forward * (speed / 60);
     }
