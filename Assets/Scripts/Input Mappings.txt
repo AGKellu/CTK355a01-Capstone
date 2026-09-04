@@ -1,0 +1,40 @@
+Keyboard mapping 
+LMB - Shoot laser
+RMB - Target craft in front
+Space - Switch through Enemy Targets
+W - Throttle Up (incremental)
+S - Throttle Down (incremental)
+A - Pitch Left
+D - Pitch Right
+Mouse Forward - Pitch Forward
+Mouse Backward - Pitch backward
+Mouse Move Left - Roll Left
+Mouse Move Right - Roll Right
+
+ 
+Controller mapping (Xbox control scheme)
+LT - Target craft in front/Zoom
+RT - Shoot laser
+LB - 
+RB - 
+A - 
+B - 
+X - 
+Y - 
+Dpad
+	Up - 
+	Down - 
+	Left - 
+	Right - 
+Left Stick 
+	Up - Throttle Up
+	Down- Throttle Down
+	Left - Roll left 
+	Right - Roll Right
+Right Stick 
+	Up - Pitch Forward
+	Down - Pitch Backward
+	Left - Turn left
+	Right - Turn Right
+Left Stick Press 
+Right Stick Press

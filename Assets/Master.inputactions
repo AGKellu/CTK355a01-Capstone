@@ -26,21 +26,12 @@
                 },
                 {
                     "name": "RollLR",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "815b212b-51d2-4c8c-83d7-3ba949d3b168",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PitchFB",
-                    "type": "Button",
-                    "id": "631aba95-24a1-470a-a83d-4b251ae5d7fc",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "PitchLeft",
@@ -75,8 +66,30 @@
                 },
                 {
                     "name": "",
+                    "id": "09e3eed9-da66-4016-8279-7fdde00d48dd",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrottleUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b717bfc0-c29d-4dff-8968-12e0d028139a",
                     "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrottleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89a8dd45-63a2-4126-8a37-5d8ef2d1ef12",
+                    "path": "<Gamepad>/leftStick/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -97,6 +110,17 @@
                 },
                 {
                     "name": "",
+                    "id": "0b34a610-591d-4e99-873e-e7b9b80ee883",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PitchLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "347ec82d-79a6-44a9-9aa5-60303bb17e77",
                     "path": "<Keyboard>/d",
                     "interactions": "",
@@ -107,70 +131,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "5f310e30-db1d-46ca-99b9-f9b34387ca44",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "c16da4c9-e001-4382-bba6-815c1ba29b35",
+                    "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RollLR",
-                    "isComposite": true,
+                    "action": "PitchRight",
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "b3a4a208-c52b-4eab-9248-616793a7efe3",
-                    "path": "<Mouse>/delta/x",
+                    "name": "",
+                    "id": "cac2a23f-200b-41fd-a60d-93dc9b13f644",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RollLR",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "8705cecf-18ee-4d6f-8b5f-a2ad90be8772",
-                    "path": "<Mouse>/delta/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RollLR",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "2dc55540-c85d-45fb-929a-0d7fc6485870",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PitchFB",
-                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "622888fb-996a-4936-99de-ce2ed76cb467",
-                    "path": "<Mouse>/delta/down",
+                    "name": "",
+                    "id": "c26fee5e-3532-4254-8bb9-02220ffe8f73",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PitchFB",
+                    "action": "RollLR",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "739277db-ebd6-4d47-98b6-1e7216edd368",
-                    "path": "<Mouse>/delta/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PitchFB",
-                    "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -211,8 +202,30 @@
                 },
                 {
                     "name": "",
+                    "id": "16b6ae15-2717-42f6-8a3e-9289cf154082",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Laser",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "df645407-6abf-45cf-ad0d-83770e8494c4",
                     "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4b50faf-4040-481f-9af5-ca20e5ae1068",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

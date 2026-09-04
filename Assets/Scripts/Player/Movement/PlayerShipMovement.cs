@@ -16,9 +16,11 @@ public class PlayerShipMovement : MonoBehaviour
     private Vector3 pos;
     //private Vector3 rotat;
     public float speed;
+    private Vector2 rotato;
     [SerializeField] private float Zrotat;
     [SerializeField] private float Yrotat;
     [SerializeField] private float Xrotat;
+    private bool rolling;
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -35,54 +37,97 @@ public class PlayerShipMovement : MonoBehaviour
         ThrottleDown.performed += ctx => SubtractSpeed();
         PitchRight = InputSystem.actions.FindAction("Movement/PitchRight");
         PitchLeft = InputSystem.actions.FindAction("Movement/PitchLeft");
-        PitchForwardBackward = InputSystem.actions.FindAction("Movement/PitchFB");
+        //PitchForwardBackward = InputSystem.actions.FindAction("Movement/PitchFB");
         RollLeftRight = InputSystem.actions.FindAction("Movement/RollLR");
+        RollLeftRight.performed += ctx => Roll();
+        RollLeftRight.canceled += ctx => StopRolling();
+        Cursor.lockState = CursorLockMode.Locked;
         //RollValue = RollLeftRight.ReadValue<float>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("Mouse X") > 0.1)
+        /* if (Input.GetAxis("Mouse X") > 0.1)
+         {
+             if (Yrotat < 360)
+             {
+                 //Yrotat += 1;
+                 Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + 2, 1f);
+             }
+         }
+         if (Input.GetAxis("Mouse X") < -0.1)
+         {
+             if (Yrotat > -360)
+             {
+                 //Yrotat -= 1;
+                 Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - 2, 1f);
+             }
+         }
+         if (Input.GetAxis("Mouse Y") > 0.1)
+         {
+             if (Xrotat > -360)
+             {
+                 //Xrotat -= 1;
+                 Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - 2, 1f);
+             }
+         }
+         if (Input.GetAxis("Mouse Y") < -0.1)
+         {
+             if (Xrotat < 360)
+             {
+                 //Xrotat += 1;
+                 Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + 2, 1f);
+             }
+         }*/
+        if (rolling)
         {
-            if (Yrotat < 360)
-            {
-                Yrotat += 2;
 
+            //DO SMOOTH step with everything below
+            if (rotato.x < -0.1)
+            {
+                if (rotato.x > -360)
+                {
+                    //Yrotat -= 1;
+                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - 2, 1f);
+                }
+                //Debug.Log("Move up");
+            }
+            else if (rotato.x > 0.1)
+            {
+                if (rotato.x < 360)
+                {
+                    //Yrotat += 1;
+                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + 2, 1f);
+                }
+                //Debug.Log("Move down");
+            }
+            if (rotato.y < -0.1)
+            {
+                if (rotato.y > -360)
+                {
+                    //Xrotat += 1;
+                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + 2, 1f);
+                }
+                //Debug.Log("Move right");
+            }
+            else if (rotato.y > 0.1)
+            {
+                if (rotato.y < 360)
+                {
+                    //Xrotat -= 1;
+                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - 2, 1f);
+                }
+                //Debug.Log("Move left");
             }
         }
-        if (Input.GetAxis("Mouse X") < -0.1)
-        {
-            if (Yrotat > -360)
-            {
-
-                Yrotat -= 2;
-            }
-        }
-        if (Input.GetAxis("Mouse Y") > 0.1)
-        {
-            if (Xrotat > -180)
-            {
-
-                Xrotat -= 2;
-            }
-            //Debug.Log("Mouse moved Up");
-        }
-        if (Input.GetAxis("Mouse Y") < -0.1)
-        {
-            if (Xrotat < 180)
-            {
-
-                Xrotat += 2;
-            }
-            //Debug.Log("Mouse moved down");
-        }
+        
         if (PitchLeft.IsPressed())
         {
             if (Zrotat < 180)
             {
 
-                Zrotat += 2;
+                Zrotat += 1;
             }
         }
         if (PitchRight.IsPressed())
@@ -90,7 +135,7 @@ public class PlayerShipMovement : MonoBehaviour
             if (Zrotat > -180)
             {
 
-                Zrotat -= 2;
+                Zrotat -= 1;
             }
         }
         //Debug.Log(RollValue);
@@ -126,6 +171,54 @@ public class PlayerShipMovement : MonoBehaviour
     }
     void OnEnable()
     {
-        
+
     }
+    void Roll()
+    {
+        rolling = true;
+        rotato = RollLeftRight.ReadValue<Vector2>();
+        //Debug.Log(rotato.x + "\n" + rotato.y);
+        /*if (rotato.x < -0.1)
+        {
+            if (rotato.x > -360)
+            {
+                //Yrotat -= 1;
+                Yrotat -= .5f;
+            }
+            //Debug.Log("Move up");
+        }
+        else if (rotato.x > 0.1)
+        {
+            if (rotato.x < 360)
+            {
+                //Yrotat += 1;
+                Yrotat += .5f;
+            }
+            //Debug.Log("Move down");
+        }
+        if (rotato.y < -0.1)
+        {
+            if (rotato.y > -360)
+            {
+                //Xrotat += 1;
+                Xrotat += .5f;
+            }
+            //Debug.Log("Move right");
+        }
+        else if (rotato.y > 0.1)
+        {
+            if (rotato.y < 360)
+            {
+                //Xrotat -= 1;
+                Xrotat -= .5f;
+            }
+            //Debug.Log("Move left");
+        }
+        */
+    }
+    void StopRolling()
+    {
+        rolling = false;
+    }
+    
 }
