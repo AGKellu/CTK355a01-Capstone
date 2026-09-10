@@ -77,6 +77,17 @@
                 },
                 {
                     "name": "",
+                    "id": "c1b75cce-c3e5-48c6-ab9f-86a31c6c818c",
+                    "path": "<HID::Thrustmaster T.Flight Hotas One>/hat/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrottleUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b717bfc0-c29d-4dff-8968-12e0d028139a",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -90,6 +101,17 @@
                     "name": "",
                     "id": "89a8dd45-63a2-4126-8a37-5d8ef2d1ef12",
                     "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrottleDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1aa070b1-cc8b-4f20-aa45-d3e6dfecf07a",
+                    "path": "<HID::Thrustmaster T.Flight Hotas One>/hat/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -121,6 +143,17 @@
                 },
                 {
                     "name": "",
+                    "id": "f481468b-b8f3-4540-8987-f29c61cc7b18",
+                    "path": "<HID::Thrustmaster T.Flight Hotas One>/hat/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PitchLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "347ec82d-79a6-44a9-9aa5-60303bb17e77",
                     "path": "<Keyboard>/d",
                     "interactions": "",
@@ -143,6 +176,17 @@
                 },
                 {
                     "name": "",
+                    "id": "abe7a42f-9a57-4b96-bb5f-df6ebf4758c7",
+                    "path": "<HID::Thrustmaster T.Flight Hotas One>/hat/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PitchRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cac2a23f-200b-41fd-a60d-93dc9b13f644",
                     "path": "<Mouse>/delta",
                     "interactions": "",
@@ -156,6 +200,17 @@
                     "name": "",
                     "id": "c26fee5e-3532-4254-8bb9-02220ffe8f73",
                     "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RollLR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb5ba3d6-eef1-4874-9b33-4f1f2727e53a",
+                    "path": "<Joystick>/stick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -213,6 +268,17 @@
                 },
                 {
                     "name": "",
+                    "id": "b9399dde-18aa-4aa7-a7a1-b1d08fbd6d17",
+                    "path": "<Joystick>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Laser",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "df645407-6abf-45cf-ad0d-83770e8494c4",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -226,6 +292,17 @@
                     "name": "",
                     "id": "e4b50faf-4040-481f-9af5-ca20e5ae1068",
                     "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "04514160-45d7-4958-919c-b06e6c7adb61",
+                    "path": "<HID::Thrustmaster T.Flight Hotas One>/button2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
