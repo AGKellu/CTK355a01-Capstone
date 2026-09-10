@@ -2,8 +2,8 @@ Keyboard mapping
 LMB - Shoot laser
 RMB - Target craft in front
 Space - Switch through Enemy Targets
-W - Throttle Up (incremental)
-S - Throttle Down (incremental)
+W - Throttle Up 
+S - Throttle Down 
 A - Pitch Left
 D - Pitch Right
 Mouse Forward - Pitch Forward

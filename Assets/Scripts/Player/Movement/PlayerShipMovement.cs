@@ -38,6 +38,9 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera ZoomCamera;
     [SerializeField] private CinemachineVirtualCamera DeathCamera;
 
+    [Header("Misc")]
+    [SerializeField] private GameObject CrosshairUI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -172,15 +175,19 @@ public class PlayerShipMovement : MonoBehaviour
                 if (speed > 0)
                 {
                     speed -= 0.05f;
+                    //if (speed < 0)
+     //               {
+   //                     speed = 0;
+ //                   }
                     
                 }
             }
-        //Debug.Log(RollValue);
-        //transform.Rotate(Zrotat/30, Yrotat/30, 0);
-        transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
-        //transform.Rotate(Vector3(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0));
-        //transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, RollValue);
-        playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime));
+            //Debug.Log(RollValue);
+            //transform.Rotate(Zrotat/30, Yrotat/30, 0);
+            transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
+
+            playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime));
+            //playerRB.linearVelocity= (Vector3.forward * ((speed * 50) * Time.deltaTime));
         }
         //transform.position += transform.forward * (speed / 60);
     }
@@ -315,6 +322,7 @@ public class PlayerShipMovement : MonoBehaviour
         ZoomCamera.Priority = 0;
         DeathCamera.Priority = 1;
         GetComponent<PlayerInput>().actions.FindActionMap("Movement").Disable();
+        CrosshairUI.SetActive(false);
         //DeathCamera.gameObject.SetActive(true);
         
         //Put rotate around player in update of deathcam script
