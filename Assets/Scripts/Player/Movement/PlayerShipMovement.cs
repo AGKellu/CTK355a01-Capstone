@@ -28,6 +28,8 @@ public class PlayerShipMovement : MonoBehaviour
     private int NormFOV = 60;
     private int ZoomFOV = 30;
     public int Health;
+    private bool speedingUp;
+    private bool slowingDown;
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -43,8 +45,10 @@ public class PlayerShipMovement : MonoBehaviour
         playerRB = gameObject.GetComponent<Rigidbody>();
         ThrottleUp = InputSystem.actions.FindAction("Movement/ThrottleUp");
         ThrottleUp.performed += ctx => AddSpeed();
+        ThrottleUp.canceled += ctx => StopSpeeding();
         ThrottleDown = InputSystem.actions.FindAction("Movement/ThrottleDown");
         ThrottleDown.performed += ctx => SubtractSpeed();
+        ThrottleDown.canceled += ctx => StopSlowing();
         PitchRight = InputSystem.actions.FindAction("Movement/PitchRight");
         PitchLeft = InputSystem.actions.FindAction("Movement/PitchLeft");
         RollLeftRight = InputSystem.actions.FindAction("Movement/RollLR");
@@ -148,14 +152,29 @@ public class PlayerShipMovement : MonoBehaviour
                 Zrotat += 1;
             }
         }
-        if (PitchRight.IsPressed())
-        {
-            if (Zrotat > -180)
+            if (PitchRight.IsPressed())
             {
+                if (Zrotat > -180)
+                {
 
-                Zrotat -= 1;
+                    Zrotat -= 1;
+                }
             }
-        }
+            if (speedingUp)
+            {
+                if (speed< 5)
+                {
+                    speed += 0.05f;
+                }
+            }
+            else if (slowingDown)
+            {
+                if (speed > 0)
+                {
+                    speed -= 0.05f;
+                    
+                }
+            }
         //Debug.Log(RollValue);
         //transform.Rotate(Zrotat/30, Yrotat/30, 0);
         transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
@@ -169,23 +188,34 @@ public class PlayerShipMovement : MonoBehaviour
     {
         //Keyboard is incremental
         //Controller is smoothed
-        if (speed < 5)
-        {
-            speed += 1;
-        }
+        //if (speed < 5)
+        //{
+        //  speed += 1;
+        //}
+        speedingUp = true;
     }
     void SubtractSpeed()
     {
         //Keyboard is incremental
         //Controller is smoothed
-        if (speed > 0)
-        {
-            speed -= 1;
-        }
-        if (speed == 0)
-        {
-            playerRB.linearVelocity = new Vector3(0, 0, 0);
-        }
+        //if (speed > 0)
+        //{
+        //  speed -= 1;
+        //}
+        //if (speed == 0)
+        //{
+        //  playerRB.linearVelocity = new Vector3(0, 0, 0);
+        //}
+        slowingDown = true;
+
+    }
+    void StopSpeeding()
+    {
+        speedingUp = false;
+    }
+    void StopSlowing()
+    {
+        slowingDown = false;
     }
     void OnEnable()
     {
