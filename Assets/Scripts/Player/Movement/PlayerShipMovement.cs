@@ -30,6 +30,8 @@ public class PlayerShipMovement : MonoBehaviour
     public int Health;
     private bool speedingUp;
     private bool slowingDown;
+    public float Ysens;
+    public float Xsens;
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -40,6 +42,8 @@ public class PlayerShipMovement : MonoBehaviour
 
     [Header("Misc")]
     [SerializeField] private GameObject CrosshairUI;
+    public bool IncrementalSpeed;
+    //If this is true, pressing W or S would add or subtract speed incrementally by 1 or by -1, respectively
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -65,7 +69,7 @@ public class PlayerShipMovement : MonoBehaviour
         AltFire.performed += ctx => Zoom();
         AltFire.canceled += ctx => ZoomCancel();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
-        DeathCamera.LookAt = gameObject.transform; 
+        DeathCamera.LookAt = gameObject.transform;
     }
 
     // Update is called once per frame
@@ -103,58 +107,58 @@ public class PlayerShipMovement : MonoBehaviour
                  Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + 2, 1f);
              }
          }*/
-         if (!dead)
-         {
-        if (rolling)
+        if (!dead)
         {
-
-            //DO SMOOTH step with everything below
-            if (rotato.x < -0.1)
-            {
-                if (rotato.x > -360)
-                {
-                    //Yrotat -= 1;
-                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - 2, 1f);
-                }
-                //Debug.Log("Move up");
-            }
-            else if (rotato.x > 0.1)
-            {
-                if (rotato.x < 360)
-                {
-                    //Yrotat += 1;
-                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + 2, 1f);
-                }
-                //Debug.Log("Move down");
-            }
-            if (rotato.y < -0.1)
-            {
-                if (rotato.y > -360)
-                {
-                    //Xrotat += 1;
-                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + 2, 1f);
-                }
-                //Debug.Log("Move right");
-            }
-            else if (rotato.y > 0.1)
-            {
-                if (rotato.y < 360)
-                {
-                    //Xrotat -= 1;
-                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - 2, 1f);
-                }
-                //Debug.Log("Move left");
-            }
-        }
-        
-        if (PitchLeft.IsPressed())
-        {
-            if (Zrotat < 180)
+            if (rolling)
             {
 
-                Zrotat += 1;
+                //DO SMOOTH step with everything below
+                if (rotato.x < -0.1)
+                {
+                    //if (rotato.x > -360)
+                    //{
+                        //Yrotat -= 1;
+                        Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - Ysens, 1f);
+                    //}
+                    //Debug.Log("Move up");
+                }
+                else if (rotato.x > 0.1)
+                {
+                   //if (rotato.x < 360)
+                    //{
+                        //Yrotat += 1;
+                        Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + Ysens, 1f);
+                    //}
+                    //Debug.Log("Move down");
+                }
+                if (rotato.y < -0.1)
+                {
+                    //if (rotato.y > -360)
+                    //{
+                        //Xrotat += 1;
+                        Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + Xsens, 1f);
+                    //}
+                    //Debug.Log("Move right");
+                }
+                else if (rotato.y > 0.1)
+                {
+                   // if (rotato.y < 360)
+                    //{
+                        //Xrotat -= 1;
+                        Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - Xsens, 1f);
+                   // }
+                    //Debug.Log("Move left");
+                }
             }
-        }
+
+            if (PitchLeft.IsPressed())
+            {
+                if (Zrotat < 180)
+                {
+
+                    Zrotat += 1;
+                }
+            }
             if (PitchRight.IsPressed())
             {
                 if (Zrotat > -180)
@@ -163,9 +167,11 @@ public class PlayerShipMovement : MonoBehaviour
                     Zrotat -= 1;
                 }
             }
+
+            //following code is to be if incremental is false, put an if method here
             if (speedingUp)
             {
-                if (speed< 5)
+                if (speed < 5)
                 {
                     speed += 0.05f;
                 }
@@ -175,26 +181,23 @@ public class PlayerShipMovement : MonoBehaviour
                 if (speed > 0)
                 {
                     speed -= 0.05f;
-                    //if (speed < 0)
-     //               {
-   //                     speed = 0;
- //                   }
-                    
+                    if (speed < 0)
+                    {
+                        speed = 0;
+                        playerRB.linearVelocity = new Vector3(0, 0, 0);
+
+                    }
+
                 }
             }
-            //Debug.Log(RollValue);
-            //transform.Rotate(Zrotat/30, Yrotat/30, 0);
             transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
 
-            playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime));
-            //playerRB.linearVelocity= (Vector3.forward * ((speed * 50) * Time.deltaTime));
+            playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
         }
-        //transform.position += transform.forward * (speed / 60);
     }
     void AddSpeed()
     {
-        //Keyboard is incremental
-        //Controller is smoothed
+        //if incremental is true, set the following code in an if method
         //if (speed < 5)
         //{
         //  speed += 1;
@@ -203,8 +206,7 @@ public class PlayerShipMovement : MonoBehaviour
     }
     void SubtractSpeed()
     {
-        //Keyboard is incremental
-        //Controller is smoothed
+        //if incremental is true, set the following code in an if method
         //if (speed > 0)
         //{
         //  speed -= 1;
@@ -275,7 +277,7 @@ public class PlayerShipMovement : MonoBehaviour
     {
         rolling = false;
     }
-        void ShootLaser()
+    void ShootLaser()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
@@ -318,13 +320,13 @@ public class PlayerShipMovement : MonoBehaviour
         //gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationZ;
         speed = 0;
         playerRB.linearVelocity = new Vector2(0, 0);
-        Camera.Priority= 0;
+        Camera.Priority = 0;
         ZoomCamera.Priority = 0;
         DeathCamera.Priority = 1;
         GetComponent<PlayerInput>().actions.FindActionMap("Movement").Disable();
         CrosshairUI.SetActive(false);
         //DeathCamera.gameObject.SetActive(true);
-        
+
         //Put rotate around player in update of deathcam script
         //Make sure to setactive(false) when respawning
     }
