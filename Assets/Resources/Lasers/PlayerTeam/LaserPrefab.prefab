@@ -112,7 +112,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 3
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!114 &3799489706486184626
@@ -127,3 +127,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf465160fe627b4eafb2a2a52d8fafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AmmunitionMoveScript
+  speed: 7.5
+  forward: {x: 0, y: 0, z: 0}

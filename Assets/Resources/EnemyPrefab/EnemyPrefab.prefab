@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5767239940012430074}
   - component: {fileID: 1402307538733291259}
+  - component: {fileID: 3270596480556174737}
   m_Layer: 0
   m_Name: EnemyPrefab
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,6 +46,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15479194cbc777447839f25f213c6db0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuzzerScript
+--- !u!65 &3270596480556174737
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3980722015408015690}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1, z: 1}
+  m_Center: {x: -0.5, y: 0, z: -0.25}
 --- !u!1001 &4989812993882581231
 PrefabInstance:
   m_ObjectHideFlags: 0

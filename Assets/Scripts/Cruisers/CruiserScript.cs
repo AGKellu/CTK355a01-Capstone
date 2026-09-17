@@ -8,7 +8,7 @@ public class CruiserScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        int AmountOfFighters = Random.Range(0, 5);
+        int AmountOfFighters = Random.Range(1, 5);
         Spawn(AmountOfFighters);
     }
 
