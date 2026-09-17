@@ -43,6 +43,10 @@ public class PlayerShipMovement : MonoBehaviour
     [Header("Misc")]
     [SerializeField] private GameObject CrosshairUI;
     public bool IncrementalSpeed;
+    [SerializeField] private GameObject FrameOfReference;
+    [SerializeField] private GameObject LaserPrefab;
+    [SerializeField] private GameObject LaserPoint1;
+    [SerializeField] private GameObject LaserPoint2;
     //If this is true, pressing W or S would add or subtract speed incrementally by 1 or by -1, respectively
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -169,7 +173,13 @@ public class PlayerShipMovement : MonoBehaviour
             }
 
             //following code is to be if incremental is false, put an if method here
-            if (speedingUp)
+            if (IncrementalSpeed)
+            {
+
+            }
+            else 
+            {
+                if (speedingUp)
             {
                 if (speed < 5)
                 {
@@ -190,8 +200,10 @@ public class PlayerShipMovement : MonoBehaviour
 
                 }
             }
+            }
+            
             transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
-
+            FrameOfReference.transform.localRotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
             playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
         }
     }
@@ -202,7 +214,18 @@ public class PlayerShipMovement : MonoBehaviour
         //{
         //  speed += 1;
         //}
+        if(IncrementalSpeed)
+        {
+             if (speed < 5)
+        {
+          speed += 1;
+        }
+        }
+        else
+        {
+            
         speedingUp = true;
+        }
     }
     void SubtractSpeed()
     {
@@ -215,7 +238,22 @@ public class PlayerShipMovement : MonoBehaviour
         //{
         //  playerRB.linearVelocity = new Vector3(0, 0, 0);
         //}
+        if (IncrementalSpeed)
+        {
+            if (speed > 0)
+        {
+          speed -= 1;
+        }
+        if (speed == 0)
+        {
+          playerRB.linearVelocity = new Vector3(0, 0, 0);
+        }
+        }
+        else 
+        {
+            
         slowingDown = true;
+        }
 
     }
     void StopSpeeding()
@@ -279,16 +317,20 @@ public class PlayerShipMovement : MonoBehaviour
     }
     void ShootLaser()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
-        {
+        //RaycastHit hit;
+        //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        //{
             //Debug.Log("Hit something");
-            if (hit.collider.gameObject.CompareTag("Enemy"))
-            {
-                Destroy(hit.collider.gameObject);
-                Debug.Log("Hit enemy\nDo damage");
-            }
-        }
+            //if (hit.collider.gameObject.CompareTag("Enemy"))
+            //{
+              //  Destroy(hit.collider.gameObject);
+               // Debug.Log("Hit enemy\nDo damage");
+            //}
+       // }
+       GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, Quaternion.Euler(90, Yrotat, 0));
+       Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+       GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(90, Yrotat, 0));
+        Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
     }
     void Zoom()
     {
