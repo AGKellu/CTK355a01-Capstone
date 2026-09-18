@@ -3024,7 +3024,7 @@ MonoBehaviour:
   Zrotat: 0
   Yrotat: 0
   Xrotat: 0
-  Health: 1
+  Health: 5
   Ysens: 2
   Xsens: 2
   Camera: {fileID: 1350040267}

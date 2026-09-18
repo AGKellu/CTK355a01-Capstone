@@ -32,6 +32,7 @@ public class PlayerShipMovement : MonoBehaviour
     private bool slowingDown;
     public float Ysens;
     public float Xsens;
+    
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -344,7 +345,7 @@ public class PlayerShipMovement : MonoBehaviour
         ZoomCamera.Priority = 0;
         DeathCamera.Priority = 0;
     }
-    void TakeDamage(int Damage)
+    public void TakeDamage(int Damage)
     {
         Health -= Damage;
         if (Health <= 0)
