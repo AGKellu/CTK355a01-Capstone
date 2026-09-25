@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Debug = UnityEngine.Debug;
 using Cinemachine;
+using UnityEngine.UI;
 public class PlayerShipMovement : MonoBehaviour
 {
     [Header("Input Actions")]
@@ -24,7 +25,7 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private float Xrotat;
     private bool rolling;
     //From ShipAttack Script
-    private bool dead;
+    public bool dead;
     private int NormFOV = 60;
     private int ZoomFOV = 30;
     public int Health;
@@ -32,6 +33,7 @@ public class PlayerShipMovement : MonoBehaviour
     private bool slowingDown;
     public float Ysens;
     public float Xsens;
+    public bool Targeted;
     
 
     [Header("Player Components")]
@@ -42,15 +44,27 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera DeathCamera;
 
     [Header("Misc")]
-    [SerializeField] private GameObject CrosshairUI;
+    //[SerializeField] private GameObject CrosshairUI;
     public bool IncrementalSpeed;
+    //If this is true, pressing W or S would add or subtract speed incrementally by 1 or by -1, respectively
+
     [SerializeField] private GameObject FrameOfReference;
     [SerializeField] private GameObject LaserPrefab;
     [SerializeField] private GameObject LaserPoint1;
     [SerializeField] private GameObject LaserPoint2;
-    //If this is true, pressing W or S would add or subtract speed incrementally by 1 or by -1, respectively
-
+    [SerializeField] private Image speedRadialUI;
+    public GameObject TargetedFighter;
+    //[SerializeField] public GameObject TargetedFighterStill;
+    public static PlayerShipMovement instance;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -71,8 +85,9 @@ public class PlayerShipMovement : MonoBehaviour
         Shoot = InputSystem.actions.FindAction("Attacks/Laser");
         Shoot.performed += ctx => ShootLaser();
         AltFire = InputSystem.actions.FindAction("Attacks/Zoom");
-        AltFire.performed += ctx => Zoom();
-        AltFire.canceled += ctx => ZoomCancel();
+        AltFire.performed += ctx => Target();
+        //AltFire.performed += ctx => Zoom();
+        //AltFire.canceled += ctx => ZoomCancel();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
         DeathCamera.LookAt = gameObject.transform;
     }
@@ -114,6 +129,15 @@ public class PlayerShipMovement : MonoBehaviour
          }*/
         if (!dead)
         {
+            if (Targeted)
+            {
+                if (TargetedFighter.name.Contains("Buzzer"))
+                {
+                    Debug.Log(TargetedFighter.GetComponent<BuzzerScript>().Health);
+                
+                }
+                Debug.Log(Vector3.Distance(TargetedFighter.transform.position, transform.position).ToString("F2"));
+            }
             if (rolling)
             {
 
@@ -184,14 +208,16 @@ public class PlayerShipMovement : MonoBehaviour
             {
                 if (speed < 5)
                 {
-                    speed += 0.05f;
+                        speed += 0.05f;
+                        speedRadialUI.fillAmount = (speed /5);
                 }
             }
             else if (slowingDown)
             {
                 if (speed > 0)
                 {
-                    speed -= 0.05f;
+                        speed -= 0.05f;
+                        speedRadialUI.fillAmount = (speed /5);
                     if (speed < 0)
                     {
                         speed = 0;
@@ -205,7 +231,9 @@ public class PlayerShipMovement : MonoBehaviour
             
             transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
             FrameOfReference.transform.localRotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
-            playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
+            // playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
+            //playerRB.AddForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
+            playerRB.AddRelativeForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
         }
     }
     void AddSpeed()
@@ -345,6 +373,27 @@ public class PlayerShipMovement : MonoBehaviour
         ZoomCamera.Priority = 0;
         DeathCamera.Priority = 0;
     }
+    void Target()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward),out hit, 1000))
+        {
+            
+            //if allies are made, just comment the below if statement
+            if (hit.collider.gameObject.CompareTag("Enemy"))
+            {
+                TargetedFighter = hit.collider.gameObject;
+                
+                Targeted = true;
+                //if (hit.collider.gameObject.name.Contains("Buzzer"))
+                //{
+                    //Debug.Log(hit.collider.gameObject.GetComponent<BuzzerScript>().Health);
+                    //Debug.Log(Vector3.Distance(transform.position, hit.collider.gameObject.transform.position));
+                //}
+            }
+            //Debug.Log(hit.collider.gameObject.name);
+        }
+    }
     public void TakeDamage(int Damage)
     {
         Health -= Damage;
@@ -367,7 +416,8 @@ public class PlayerShipMovement : MonoBehaviour
         ZoomCamera.Priority = 0;
         DeathCamera.Priority = 1;
         GetComponent<PlayerInput>().actions.FindActionMap("Movement").Disable();
-        CrosshairUI.SetActive(false);
+        CanvasUIHolder.instance.gameObject.SetActive(false);
+        //CrosshairUI.SetActive(false);
         //DeathCamera.gameObject.SetActive(true);
 
         //Put rotate around player in update of deathcam script

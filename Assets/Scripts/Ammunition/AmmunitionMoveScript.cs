@@ -33,6 +33,7 @@ public class AmmunitionMoveScript : MonoBehaviour
             else
             {
                 coll.gameObject.GetComponent<BuzzerScript>().TakeDamage(1);
+                Destroy(gameObject);
             
             }
             //Destroy(coll.gameObject);
@@ -46,7 +47,8 @@ public class AmmunitionMoveScript : MonoBehaviour
             }
             else
             {
-             coll.gameObject.GetComponent<PlayerShipMovement>().TakeDamage(1);
+                coll.gameObject.GetComponent<PlayerShipMovement>().TakeDamage(1);
+                Destroy(gameObject);
 
             }
         }

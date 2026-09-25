@@ -179,6 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf465160fe627b4eafb2a2a52d8fafb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AmmunitionMoveScript
-  speed: 7.5
+  speed: 15
   OwnerFaction: Enemy
   forward: {x: 0, y: 0, z: 0}
