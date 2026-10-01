@@ -4,7 +4,7 @@ using System.Collections;
 //Make all of these individual scripts into one big enemy script, that passes arguments based on bools
 public class BuzzerScript : MonoBehaviour
 {
-    private GameObject Player;
+    //private GameObject Player;
     public int Health;
     [SerializeField] private GameObject LaserPrefab;
     [SerializeField] private GameObject LaserPoint;
@@ -14,6 +14,7 @@ public class BuzzerScript : MonoBehaviour
     //[SerializeField] private GameObject Canvas;
     [SerializeField] private Sprite TargetFighterStill;
     public GameObject TargetedOverlay;
+    public float speed;
     //[SerializeField] private GameObject LaserPoint2;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,7 +26,8 @@ public class BuzzerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.position += transform.forward * .01f;
+        //Below code is commented to stop it from moving during testing
+        transform.position += transform.forward * .01f;
         Vector3 newRotate = Vector3.RotateTowards(transform.forward, (Player.transform.position - transform.position), 1f, 0.0f);
         transform.rotation = Quaternion.LookRotation(newRotate);
         //        float distanceToPlayer = Vector3.distance(transform.position, Player.transform.position);
