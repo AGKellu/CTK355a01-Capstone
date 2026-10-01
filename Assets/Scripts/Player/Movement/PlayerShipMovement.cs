@@ -434,7 +434,7 @@ public class PlayerShipMovement : MonoBehaviour
             //if allies are made, just comment the below if statement
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
-                if (hit.collider.gameObject != TargetedFighter)
+                if (hit.collider.gameObject != TargetedFighter) // Might have hotswapping targets or targetting nothing if hitting void
                 {
                     TargetedFighter = hit.collider.gameObject;
                 
@@ -460,6 +460,15 @@ public class PlayerShipMovement : MonoBehaviour
             }
             //Debug.Log(hit.collider.gameObject.name);
         }
+            else {
+                if (TargetedFighter.name.Contains("Buzzer"))
+                    {
+                        
+                    TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
+                    }
+                    TargetedFighter = null;
+                    Targeted = false;
+            }
     }
     public void TakeDamage(int Damage)
     {

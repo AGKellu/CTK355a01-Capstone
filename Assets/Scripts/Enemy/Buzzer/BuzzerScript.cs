@@ -19,7 +19,7 @@ public class BuzzerScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        //Player = GameObject.FindGameObjectWithTag("Player");
         //Canvas = GameObject.FindGameObjectWithTag("Canvas");
     }
 
@@ -28,14 +28,14 @@ public class BuzzerScript : MonoBehaviour
     {
         //Below code is commented to stop it from moving during testing
         transform.position += transform.forward * .01f;
-        Vector3 newRotate = Vector3.RotateTowards(transform.forward, (Player.transform.position - transform.position), 1f, 0.0f);
+        Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
         transform.rotation = Quaternion.LookRotation(newRotate);
         //        float distanceToPlayer = Vector3.distance(transform.position, Player.transform.position);
-        if ((Vector3.Distance(transform.position, Player.transform.position)) < TriggerDistance)
+        if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
         {
             if (!onCoolDown)
             {
-                if (!PlayerShipMovement.instance.dead)
+                if (!PlayerShipMovement.instance.dead) // If player is alive
                 {
 
                     Shoot();
@@ -57,18 +57,6 @@ public class BuzzerScript : MonoBehaviour
             }
             Debug.Log(Health);
             Debug.Log(Vector3.Distance(gameObject.transform.position, PlayerShipMovement.instance.gameObject.transform.position).ToString("F2"));
-            
-                    //Debug.Log(TargetedFighter.GetComponent<BuzzerScript>().Health);
-                    //if (!TargetedFighter.GetComponent<BuzzerScript>().TargetedOverlay.activeSelf)
-                    //{
-                        
-                    //TargetedFighter.GetComponent<BuzzerScript>().TargetedOverlay.SetActive(true);
-                    //}
-                //}
-                //Debug.Log(Vector3.Distance(TargetedFighter.transform.position, transform.position).ToString("F2"));
-            //Canvas.GetComponent<CanvasUIHolder>().TargetedFighterStill.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z);
-            //TargetedFighterStill.transform.rotation.z = transform.rotation.z;
-           // PlayerShipMovement.instance.TargetedFighterStill.transform.rotation.z = transform.rotation.z;
         }
         else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
         {
@@ -86,15 +74,7 @@ public class BuzzerScript : MonoBehaviour
         {
             if (PlayerShipMovement.instance.TargetedFighter = gameObject)
             {
-                
-            PlayerShipMovement.instance.TargetedFighter = null;
-            PlayerShipMovement.instance.Targeted = false;
-            //CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = null; 
-            if (CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite == TargetFighterStill)
-            {
-                CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = null;
-            }
-
+                DeTarget();
             }
             Destroy(gameObject);
         }
