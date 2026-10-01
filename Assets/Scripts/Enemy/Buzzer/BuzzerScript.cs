@@ -11,21 +11,21 @@ public class BuzzerScript : MonoBehaviour
     [SerializeField] private int cooldown;
     private bool onCoolDown;
     [SerializeField] private float TriggerDistance;
-    [SerializeField] private GameObject Canvas;
+    //[SerializeField] private GameObject Canvas;
     [SerializeField] private Sprite TargetFighterStill;
+    public GameObject TargetedOverlay;
     //[SerializeField] private GameObject LaserPoint2;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        Canvas = GameObject.FindGameObjectWithTag("Canvas");
+        //Canvas = GameObject.FindGameObjectWithTag("Canvas");
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += transform.forward * .01f;
-        //transform.position = Vector3.MoveTowards(transform.position, Player.transform.position, .01f);
+        //transform.position += transform.forward * .01f;
         Vector3 newRotate = Vector3.RotateTowards(transform.forward, (Player.transform.position - transform.position), 1f, 0.0f);
         transform.rotation = Quaternion.LookRotation(newRotate);
         //        float distanceToPlayer = Vector3.distance(transform.position, Player.transform.position);
@@ -41,7 +41,7 @@ public class BuzzerScript : MonoBehaviour
                 // Debug.Log("Should shoot");
             }
         }
-        if (PlayerShipMovement.instance.TargetedFighter = gameObject)
+        if (PlayerShipMovement.instance.TargetedFighter == gameObject)
         {
             if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
             {
@@ -49,9 +49,32 @@ public class BuzzerScript : MonoBehaviour
             }
             CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
             CanvasUIHolder.instance.TargetFighterStill.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z);
+            if (!TargetedOverlay.activeSelf)
+            {
+                TargetedOverlay.SetActive(true);
+            }
+            Debug.Log(Health);
+            Debug.Log(Vector3.Distance(gameObject.transform.position, PlayerShipMovement.instance.gameObject.transform.position).ToString("F2"));
+            
+                    //Debug.Log(TargetedFighter.GetComponent<BuzzerScript>().Health);
+                    //if (!TargetedFighter.GetComponent<BuzzerScript>().TargetedOverlay.activeSelf)
+                    //{
+                        
+                    //TargetedFighter.GetComponent<BuzzerScript>().TargetedOverlay.SetActive(true);
+                    //}
+                //}
+                //Debug.Log(Vector3.Distance(TargetedFighter.transform.position, transform.position).ToString("F2"));
             //Canvas.GetComponent<CanvasUIHolder>().TargetedFighterStill.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z);
             //TargetedFighterStill.transform.rotation.z = transform.rotation.z;
            // PlayerShipMovement.instance.TargetedFighterStill.transform.rotation.z = transform.rotation.z;
+        }
+        else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
+        {
+           // Debug.Log("Why is this still added");
+            if (TargetedOverlay.activeSelf)
+            {
+                TargetedOverlay.SetActive(false);
+            }
         }
     }
     public void TakeDamage(int Damage)
@@ -59,6 +82,18 @@ public class BuzzerScript : MonoBehaviour
         Health -= Damage;
         if (Health <= 0)
         {
+            if (PlayerShipMovement.instance.TargetedFighter = gameObject)
+            {
+                
+            PlayerShipMovement.instance.TargetedFighter = null;
+            PlayerShipMovement.instance.Targeted = false;
+            //CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = null; 
+            if (CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite == TargetFighterStill)
+            {
+                CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = null;
+            }
+
+            }
             Destroy(gameObject);
         }
     }
@@ -76,5 +111,15 @@ public class BuzzerScript : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(Seconds);
         onCoolDown = false;
+    }
+    public void DeTarget()
+    {
+        PlayerShipMovement.instance.TargetedFighter = null;
+        PlayerShipMovement.instance.Targeted = false;
+        if (CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite == TargetFighterStill)
+        {
+            CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = null;
+        }
+        
     }
 }

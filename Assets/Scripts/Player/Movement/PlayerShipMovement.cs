@@ -12,9 +12,10 @@ public class PlayerShipMovement : MonoBehaviour
     private InputAction PitchForwardBackward;
     private InputAction PitchLeft;
     private InputAction PitchRight;
-    //From ShipAttack Script
     private InputAction Shoot;
     private InputAction AltFire;
+    private InputAction FireMissile;
+    private InputAction FireSmoke;
 
     [Header("Variables")]
     private Vector3 pos;
@@ -34,6 +35,12 @@ public class PlayerShipMovement : MonoBehaviour
     public float Ysens;
     public float Xsens;
     public bool Targeted;
+    public int MissileCount;
+    //After 3 consecutive seconds of having the targeted ship in the viewport, set the target of the missile to targeted fighter before firing, set the missile transform.movetowards to the target
+    //if the target has smoke behind them(a box trigger that turns off after 1 second), missile randomly rotates in any 4 cardinal directions (towards up/down, towards left/right) from 30 to 90, stops movetowards, then keeps going for .5 seconds, then explodes 
+    //else, have the missile explode after 1 seconds when shot; missiles are half as fast as lasers 
+    public int MaxMissiles;
+    public bool MissileLoaded;
     
 
     [Header("Player Components")]
@@ -52,8 +59,12 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private GameObject LaserPrefab;
     [SerializeField] private GameObject LaserPoint1;
     [SerializeField] private GameObject LaserPoint2;
+    [SerializeField] private GameObject MissilePoint;
+    [SerializeField] private GameObject PlayerMissile;
     [SerializeField] private Image speedRadialUI;
     public GameObject TargetedFighter;
+    private float TargetedSeconds;
+    [SerializeField] private Image MissileTargetRadialUI;
     //[SerializeField] public GameObject TargetedFighterStill;
     public static PlayerShipMovement instance;
     
@@ -83,11 +94,15 @@ public class PlayerShipMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         //From ShipAttack Script
         Shoot = InputSystem.actions.FindAction("Attacks/Laser");
-        Shoot.performed += ctx => ShootLaser();
+        Shoot.performed += ctx => ShootLaser("Laser");
         AltFire = InputSystem.actions.FindAction("Attacks/Zoom");
         AltFire.performed += ctx => Target();
         //AltFire.performed += ctx => Zoom();
         //AltFire.canceled += ctx => ZoomCancel();
+        FireMissile = InputSystem.actions.FindAction("Attacks/FireMissile");
+        FireMissile.performed += ctx => ShootLaser("Missile");
+        FireSmoke = InputSystem.actions.FindAction("Attacks/FireSmokeScreen");
+        FireSmoke.performed += ctx => SmokeScreen();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
         DeathCamera.LookAt = gameObject.transform;
     }
@@ -95,6 +110,21 @@ public class PlayerShipMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (TargetedFighter != null && !MissileLoaded && (MissileCount < MaxMissiles))
+        {
+            if (TargetedSeconds < 3)
+            {
+                TargetedSeconds += 1/60;
+            }
+            if (TargetedSeconds >= 3)
+            {
+                MissileLoaded = true;
+                Debug.Log("Missile Loaded, put on the crosshairUI \nPut Missiles on the dashboard UI");
+                
+                TargetedSeconds = 0;
+            }
+        }
+        
         /* if (Input.GetAxis("Mouse X") > 0.1)
          {
              if (Yrotat < 360)
@@ -129,15 +159,11 @@ public class PlayerShipMovement : MonoBehaviour
          }*/
         if (!dead)
         {
-            if (Targeted)
-            {
-                if (TargetedFighter.name.Contains("Buzzer"))
-                {
-                    Debug.Log(TargetedFighter.GetComponent<BuzzerScript>().Health);
-                
-                }
-                Debug.Log(Vector3.Distance(TargetedFighter.transform.position, transform.position).ToString("F2"));
-            }
+            //if (Targeted)
+            //{
+                //if (TargetedFighter.name.Contains("Buzzer"))
+                //{
+            //}
             if (rolling)
             {
 
@@ -344,7 +370,7 @@ public class PlayerShipMovement : MonoBehaviour
     {
         rolling = false;
     }
-    void ShootLaser()
+    void ShootLaser(string Projectile)
     {
         //RaycastHit hit;
         //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
@@ -356,10 +382,36 @@ public class PlayerShipMovement : MonoBehaviour
                // Debug.Log("Hit enemy\nDo damage");
             //}
        // }
-       GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, Quaternion.Euler(90, Yrotat, 0));
-       Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
-       GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(90, Yrotat, 0));
-        Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+       if (Projectile == "Laser")
+       {
+        
+        //GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, Quaternion.Euler(Xrotat, 0, 0));
+        GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, LaserPoint1.transform.rotation);
+        Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+        //GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(Xrotat, 0, 0));
+        GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, LaserPoint2.transform.rotation);
+            Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+       }
+       else if (Projectile == "Missile")
+       {
+        if (MissileCount < MaxMissiles)
+        {
+            GameObject Missile = Instantiate(PlayerMissile, MissilePoint.transform.position, MissilePoint.transform.rotation);
+            //Missile.GetComponent<AmmunitionMoveScript>().target = 
+            Missile.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+            if (MissileLoaded)
+            {
+                Missile.GetComponent<AmmunitionMoveScript>().target = TargetedFighter;
+            }
+            MissileLoaded = false;
+            MissileCount++;
+        }
+            
+       }
+    }
+    void SmokeScreen()
+    {
+
     }
     void Zoom()
     {
@@ -382,9 +434,24 @@ public class PlayerShipMovement : MonoBehaviour
             //if allies are made, just comment the below if statement
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
-                TargetedFighter = hit.collider.gameObject;
+                if (hit.collider.gameObject != TargetedFighter)
+                {
+                    TargetedFighter = hit.collider.gameObject;
                 
                 Targeted = true;
+                }
+                else
+                {
+                    if (TargetedFighter.name.Contains("Buzzer"))
+                    {
+                        
+                    TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
+                    }
+                    //TargetedFighter = null;
+                    //Debug.Log(TargetedFighter.name);
+                    //Targeted = false;
+                }
+                
                 //if (hit.collider.gameObject.name.Contains("Buzzer"))
                 //{
                     //Debug.Log(hit.collider.gameObject.GetComponent<BuzzerScript>().Health);

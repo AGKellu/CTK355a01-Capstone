@@ -6,6 +6,7 @@ public class AmmunitionMoveScript : MonoBehaviour
     public string OwnerFaction;
     //private Rigidbody AmmoRB;
     public Vector3 forward;
+    public GameObject target;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
