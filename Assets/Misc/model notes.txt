@@ -1,0 +1,4 @@
+Heavy laser
+
+	Make the lines segmented and color as the laser is warming up, they should all be red on fire then quickly power down the line before restarting the animation
+	Potentially make black lines between the cubes to make them stand out more
