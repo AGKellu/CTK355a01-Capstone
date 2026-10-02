@@ -41,7 +41,7 @@ public class PlayerShipMovement : MonoBehaviour
     //else, have the missile explode after 1 seconds when shot; missiles are half as fast as lasers 
     public int MaxMissiles;
     public bool MissileLoaded;
-    
+
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -67,11 +67,13 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private Image MissileTargetRadialUI;
     //[SerializeField] public GameObject TargetedFighterStill;
     public static PlayerShipMovement instance;
-    
+    //Make it so that the player has 3 seconds to get back to the playable space (beacons, big space station, etc) 
+    //Make things on the top of the cockpit (hula people) to make it feel lived in
+    //Change the circle to a radar 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -110,21 +112,23 @@ public class PlayerShipMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (TargetedFighter != null && !MissileLoaded && (MissileCount < MaxMissiles))
         {
             if (TargetedSeconds < 3)
             {
-                TargetedSeconds += 1/60;
+                TargetedSeconds += 1 / 60;
             }
             if (TargetedSeconds >= 3)
             {
                 MissileLoaded = true;
                 Debug.Log("Missile Loaded, put on the crosshairUI \nPut Missiles on the dashboard UI");
-                
+
                 TargetedSeconds = 0;
             }
+            Debug.Log("The targeted seconds should be incrementing by 1/60 (due to 60 fps and max at 3 seconds)");
         }
-        
+
         /* if (Input.GetAxis("Mouse X") > 0.1)
          {
              if (Yrotat < 360)
@@ -161,8 +165,8 @@ public class PlayerShipMovement : MonoBehaviour
         {
             //if (Targeted)
             //{
-                //if (TargetedFighter.name.Contains("Buzzer"))
-                //{
+            //if (TargetedFighter.name.Contains("Buzzer"))
+            //{
             //}
             if (rolling)
             {
@@ -172,17 +176,17 @@ public class PlayerShipMovement : MonoBehaviour
                 {
                     //if (rotato.x > -360)
                     //{
-                        //Yrotat -= 1;
-                        Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - Ysens, 1f);
+                    //Yrotat -= 1;
+                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - Ysens, 1f);
                     //}
                     //Debug.Log("Move up");
                 }
                 else if (rotato.x > 0.1)
                 {
-                   //if (rotato.x < 360)
+                    //if (rotato.x < 360)
                     //{
-                        //Yrotat += 1;
-                        Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + Ysens, 1f);
+                    //Yrotat += 1;
+                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + Ysens, 1f);
                     //}
                     //Debug.Log("Move down");
                 }
@@ -190,18 +194,18 @@ public class PlayerShipMovement : MonoBehaviour
                 {
                     //if (rotato.y > -360)
                     //{
-                        //Xrotat += 1;
-                        Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + Xsens, 1f);
+                    //Xrotat += 1;
+                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + Xsens, 1f);
                     //}
                     //Debug.Log("Move right");
                 }
                 else if (rotato.y > 0.1)
                 {
-                   // if (rotato.y < 360)
+                    // if (rotato.y < 360)
                     //{
-                        //Xrotat -= 1;
-                        Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - Xsens, 1f);
-                   // }
+                    //Xrotat -= 1;
+                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - Xsens, 1f);
+                    // }
                     //Debug.Log("Move left");
                 }
             }
@@ -228,38 +232,38 @@ public class PlayerShipMovement : MonoBehaviour
             {
 
             }
-            else 
+            else
             {
                 if (speedingUp)
-            {
-                if (speed < 5)
                 {
-                        speed += 0.05f;
-                        speedRadialUI.fillAmount = (speed /5);
-                }
-            }
-            else if (slowingDown)
-            {
-                if (speed > 0)
-                {
-                        speed -= 0.05f;
-                        speedRadialUI.fillAmount = (speed /5);
-                    if (speed < 0)
+                    if (speed < 5)
                     {
-                        speed = 0;
-                        playerRB.linearVelocity = new Vector3(0, 0, 0);
+                        speed += 0.05f;
+                        speedRadialUI.fillAmount = (speed / 5);
+                    }
+                }
+                else if (slowingDown)
+                {
+                    if (speed > 0)
+                    {
+                        speed -= 0.05f;
+                        speedRadialUI.fillAmount = (speed / 5);
+                        if (speed < 0)
+                        {
+                            speed = 0;
+                            playerRB.linearVelocity = new Vector3(0, 0, 0);
+
+                        }
 
                     }
-
                 }
             }
-            }
-            
+
             transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
             FrameOfReference.transform.localRotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
-             playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
+            // playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
             //playerRB.AddForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
-            //playerRB.AddRelativeForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
+            playerRB.AddRelativeForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
         }
     }
     void AddSpeed()
@@ -269,17 +273,17 @@ public class PlayerShipMovement : MonoBehaviour
         //{
         //  speed += 1;
         //}
-        if(IncrementalSpeed)
+        if (IncrementalSpeed)
         {
-             if (speed < 5)
-        {
-          speed += 1;
-        }
+            if (speed < 5)
+            {
+                speed += 1;
+            }
         }
         else
         {
-            
-        speedingUp = true;
+
+            speedingUp = true;
         }
     }
     void SubtractSpeed()
@@ -296,18 +300,18 @@ public class PlayerShipMovement : MonoBehaviour
         if (IncrementalSpeed)
         {
             if (speed > 0)
-        {
-          speed -= 1;
+            {
+                speed -= 1;
+            }
+            if (speed == 0)
+            {
+                playerRB.linearVelocity = new Vector3(0, 0, 0);
+            }
         }
-        if (speed == 0)
+        else
         {
-          playerRB.linearVelocity = new Vector3(0, 0, 0);
-        }
-        }
-        else 
-        {
-            
-        slowingDown = true;
+
+            slowingDown = true;
         }
 
     }
@@ -375,39 +379,39 @@ public class PlayerShipMovement : MonoBehaviour
         //RaycastHit hit;
         //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
         //{
-            //Debug.Log("Hit something");
-            //if (hit.collider.gameObject.CompareTag("Enemy"))
-            //{
-              //  Destroy(hit.collider.gameObject);
-               // Debug.Log("Hit enemy\nDo damage");
-            //}
-       // }
-       if (Projectile == "Laser")
-       {
-        
-        //GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, Quaternion.Euler(Xrotat, 0, 0));
-        GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, LaserPoint1.transform.rotation);
-        Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
-        //GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(Xrotat, 0, 0));
-        GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, LaserPoint2.transform.rotation);
-            Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
-       }
-       else if (Projectile == "Missile")
-       {
-        if (MissileCount < MaxMissiles)
+        //Debug.Log("Hit something");
+        //if (hit.collider.gameObject.CompareTag("Enemy"))
+        //{
+        //  Destroy(hit.collider.gameObject);
+        // Debug.Log("Hit enemy\nDo damage");
+        //}
+        // }
+        if (Projectile == "Laser")
         {
-            GameObject Missile = Instantiate(PlayerMissile, MissilePoint.transform.position, MissilePoint.transform.rotation);
-            //Missile.GetComponent<AmmunitionMoveScript>().target = 
-            Missile.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
-            if (MissileLoaded)
-            {
-                Missile.GetComponent<AmmunitionMoveScript>().target = TargetedFighter;
-            }
-            MissileLoaded = false;
-            MissileCount++;
+
+            //GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, Quaternion.Euler(Xrotat, 0, 0));
+            GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, LaserPoint1.transform.rotation);
+            Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+            //GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(Xrotat, 0, 0));
+            GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, LaserPoint2.transform.rotation);
+            Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
         }
-            
-       }
+        else if (Projectile == "Missile")
+        {
+            if (MissileCount < MaxMissiles)
+            {
+                GameObject Missile = Instantiate(PlayerMissile, MissilePoint.transform.position, MissilePoint.transform.rotation);
+                //Missile.GetComponent<AmmunitionMoveScript>().target = 
+                Missile.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+                if (MissileLoaded)
+                {
+                    Missile.GetComponent<AmmunitionMoveScript>().target = TargetedFighter;
+                }
+                MissileLoaded = false;
+                MissileCount++;
+            }
+
+        }
     }
     void SmokeScreen()
     {
@@ -428,47 +432,53 @@ public class PlayerShipMovement : MonoBehaviour
     void Target()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward),out hit, 1000))
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 1000))
         {
-            
+
             //if allies are made, just comment the below if statement
             if (hit.collider.gameObject.CompareTag("Enemy"))
             {
                 if (hit.collider.gameObject != TargetedFighter) // Might have hotswapping targets or targetting nothing if hitting void
                 {
                     TargetedFighter = hit.collider.gameObject;
-                
-                Targeted = true;
+
+                    Targeted = true;
                 }
                 else
                 {
                     if (TargetedFighter.name.Contains("Buzzer"))
                     {
-                        
-                    TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
+
+                        TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
                     }
                     //TargetedFighter = null;
                     //Debug.Log(TargetedFighter.name);
                     //Targeted = false;
                 }
-                
+
                 //if (hit.collider.gameObject.name.Contains("Buzzer"))
                 //{
-                    //Debug.Log(hit.collider.gameObject.GetComponent<BuzzerScript>().Health);
-                    //Debug.Log(Vector3.Distance(transform.position, hit.collider.gameObject.transform.position));
+                //Debug.Log(hit.collider.gameObject.GetComponent<BuzzerScript>().Health);
+                //Debug.Log(Vector3.Distance(transform.position, hit.collider.gameObject.transform.position));
                 //}
             }
             //Debug.Log(hit.collider.gameObject.name);
         }
-            else {
+        else
+        {
+            if (TargetedFighter != null)
+            {
                 if (TargetedFighter.name.Contains("Buzzer"))
-                    {
-                        
-                    TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
-                    }
-                    TargetedFighter = null;
-                    Targeted = false;
+            {
+
+                TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
             }
+            TargetedFighter = null;
+            Targeted = false;
+            }
+            
+        }
     }
     public void TakeDamage(int Damage)
     {
