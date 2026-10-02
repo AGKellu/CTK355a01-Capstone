@@ -583,7 +583,7 @@ MonoBehaviour:
   - {fileID: 484568}
   - {fileID: 176763230}
   - {fileID: 1820373539}
-  EnemyFighter: {fileID: 3980722015408015690, guid: 4ca4f546c9142f4409195fce3d9bfbad, type: 3}
+  EnemyFighter: {fileID: 1673744587938931184, guid: 3f07dc26f9352944886bbaf2fb434dea, type: 3}
 --- !u!1 &176763230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3723,7 +3723,9 @@ MonoBehaviour:
   PlayerMissile: {fileID: 1430866299469500607, guid: cb1336c3c8e8b7a46b275e726d5374b9, type: 3}
   speedRadialUI: {fileID: 876630901}
   TargetedFighter: {fileID: 0}
-  MissileTargetRadialUI: {fileID: 0}
+  TargetedSeconds: 0
+  Target60Seconds: 0
+  MissileTargetRadialUI: {fileID: 1716362724}
 --- !u!65 &1708095264
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4005,7 +4007,7 @@ GameObject:
   - component: {fileID: 1716362725}
   - component: {fileID: 1716362724}
   m_Layer: 5
-  m_Name: Crosshair (1)
+  m_Name: Missile Target Radius UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

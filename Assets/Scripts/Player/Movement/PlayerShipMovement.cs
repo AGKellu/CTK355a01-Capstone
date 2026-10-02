@@ -63,13 +63,17 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private GameObject PlayerMissile;
     [SerializeField] private Image speedRadialUI;
     public GameObject TargetedFighter;
-    private float TargetedSeconds;
+    [SerializeField] private float TargetedSeconds;
+    [SerializeField] private int Target60Seconds;
     [SerializeField] private Image MissileTargetRadialUI;
     //[SerializeField] public GameObject TargetedFighterStill;
     public static PlayerShipMovement instance;
     //Make it so that the player has 3 seconds to get back to the playable space (beacons, big space station, etc) 
     //Make things on the top of the cockpit (hula people) to make it feel lived in
     //Change the circle to a radar 
+    //Manually make AI instead of using Navmesh 
+        //Fake being erratic, roll a d12, move for x spaces, roll a d8 to pick a direction (up, down, left, right, forward, backward), roll a d12, move for x spaces, repeat
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -110,14 +114,27 @@ public class PlayerShipMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+
         if (TargetedFighter != null && !MissileLoaded && (MissileCount < MaxMissiles))
         {
             if (TargetedSeconds < 3)
             {
-                TargetedSeconds += 1 / 60;
+                if (Target60Seconds < 60)
+                {
+
+                    Target60Seconds++;
+                }
+                else if (Target60Seconds == 60)
+                {
+                    TargetedSeconds++;
+                    Debug.Log("Missile Second Checked");
+                    Target60Seconds = 0;
+
+                }
+                //TargetedSeconds += ((1 / 60) * Time.deltaTime);
+                //Debug.Log(TargetedSeconds);
             }
             if (TargetedSeconds >= 3)
             {
@@ -126,7 +143,7 @@ public class PlayerShipMovement : MonoBehaviour
 
                 TargetedSeconds = 0;
             }
-            Debug.Log("The targeted seconds should be incrementing by 1/60 (due to 60 fps and max at 3 seconds)");
+            //Debug.Log("The targeted seconds should be incrementing by 1/60 (due to 60 fps and max at 3 seconds)");
         }
 
         /* if (Input.GetAxis("Mouse X") > 0.1)
@@ -447,11 +464,11 @@ public class PlayerShipMovement : MonoBehaviour
                 }
                 else
                 {
-                    if (TargetedFighter.name.Contains("Buzzer"))
-                    {
+                    //if (TargetedFighter.name.Contains("Buzzer"))
+                    //{
 
-                        TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
-                    }
+                    TargetedFighter.GetComponent<MasterScript>().DeTarget();
+                    //}
                     //TargetedFighter = null;
                     //Debug.Log(TargetedFighter.name);
                     //Targeted = false;
@@ -469,15 +486,15 @@ public class PlayerShipMovement : MonoBehaviour
         {
             if (TargetedFighter != null)
             {
-                if (TargetedFighter.name.Contains("Buzzer"))
-            {
+                //if (TargetedFighter.name.Contains("Buzzer"))
+                //{
 
-                TargetedFighter.GetComponent<BuzzerScript>().DeTarget();
+                    TargetedFighter.GetComponent<MasterScript>().DeTarget();
+                //}
+                TargetedFighter = null;
+                Targeted = false;
             }
-            TargetedFighter = null;
-            Targeted = false;
-            }
-            
+
         }
     }
     public void TakeDamage(int Damage)

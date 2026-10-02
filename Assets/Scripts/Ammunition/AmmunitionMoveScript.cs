@@ -25,7 +25,7 @@ public class AmmunitionMoveScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider coll)
     {
-        if (coll.gameObject.CompareTag("Enemy") && coll.gameObject.name.Contains("Buzzer"))
+        if (coll.gameObject.CompareTag("Enemy"))
         {
             if (OwnerFaction == coll.gameObject.tag)
             {
@@ -33,7 +33,7 @@ public class AmmunitionMoveScript : MonoBehaviour
             }
             else
             {
-                coll.gameObject.GetComponent<BuzzerScript>().TakeDamage(1);
+                coll.gameObject.GetComponent<MasterScript>().TakeDamage(1);
                 Destroy(gameObject);
             
             }

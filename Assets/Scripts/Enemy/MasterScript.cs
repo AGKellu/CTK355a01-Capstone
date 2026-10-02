@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 //Make all of these individual scripts into one big enemy script, that passes arguments based on bools
-public class BuzzerScript : MonoBehaviour
+public class MasterScript : MonoBehaviour
 {
     //private GameObject Player;
     public int Health;
@@ -15,6 +15,7 @@ public class BuzzerScript : MonoBehaviour
     [SerializeField] private Sprite TargetFighterStill;
     public GameObject TargetedOverlay;
     public float speed;
+   // public GameObject Spinner;
 
     // Update is called once per frame
     void Update()
@@ -35,6 +36,7 @@ public class BuzzerScript : MonoBehaviour
                 }
             }
         }
+        //Spinner.transform.RotateAround(LaserPoint.transform.position, Vector3.up, 20 * Time.deltaTime);
         if (PlayerShipMovement.instance.TargetedFighter == gameObject)
         {
             if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
@@ -42,13 +44,13 @@ public class BuzzerScript : MonoBehaviour
                 CanvasUIHolder.instance.TargetFighterStill.SetActive(true);
             }
             CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
-            CanvasUIHolder.instance.TargetFighterStill.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z);
+            //CanvasUIHolder.instance.TargetFighterStill.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z);
             if (!TargetedOverlay.activeSelf)
             {
                 TargetedOverlay.SetActive(true);
             }
-            Debug.Log(Health);
-            Debug.Log(Vector3.Distance(gameObject.transform.position, PlayerShipMovement.instance.gameObject.transform.position).ToString("F2"));
+           // Debug.Log(Health);
+           // Debug.Log(Vector3.Distance(gameObject.transform.position, PlayerShipMovement.instance.gameObject.transform.position).ToString("F2"));
         }
         else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
         {
