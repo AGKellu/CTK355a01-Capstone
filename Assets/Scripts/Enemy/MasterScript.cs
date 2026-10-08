@@ -15,14 +15,22 @@ public class MasterScript : MonoBehaviour
     [SerializeField] private Sprite TargetFighterStill;
     public GameObject TargetedOverlay;
     public float speed;
+    public GameObject EnemyForward;
+    //private GameObject Player;
+    //private PlayerShipMovement PlayerShipMovement;
    // public GameObject Spinner;
-
+    void Start()
+    {
+       // Player = GameObject.FindGameObjectWithTag("Player");
+    }
     // Update is called once per frame
     void Update()
     {
-        //Below code is commented to stop it from moving during testing
-        transform.position += transform.forward * .01f;
-        Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
+        //Below code is commented to stop movement for testing 
+        //transform.position= Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+        //if (PlayerShipMovement.instance != null)
+        
+            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
         transform.rotation = Quaternion.LookRotation(newRotate);
         //        float distanceToPlayer = Vector3.distance(transform.position, Player.transform.position);
         if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
@@ -47,6 +55,7 @@ public class MasterScript : MonoBehaviour
             //CanvasUIHolder.instance.TargetFighterStill.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z);
             if (!TargetedOverlay.activeSelf)
             {
+                Debug.Log("Hi");
                 TargetedOverlay.SetActive(true);
             }
            // Debug.Log(Health);
@@ -57,9 +66,12 @@ public class MasterScript : MonoBehaviour
            // Debug.Log("Why is this still added");
             if (TargetedOverlay.activeSelf)
             {
+                Debug.Log("what");
                 TargetedOverlay.SetActive(false);
             }
         }
+        
+        
     }
     public void TakeDamage(int Damage)
     {
@@ -90,6 +102,8 @@ public class MasterScript : MonoBehaviour
     }
     public void DeTarget() // Handles sprite deletion and resetting targeting
     {
+        Debug.Log("What");
+                
         PlayerShipMovement.instance.TargetedFighter = null;
         PlayerShipMovement.instance.Targeted = false;
         if (CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite == TargetFighterStill)

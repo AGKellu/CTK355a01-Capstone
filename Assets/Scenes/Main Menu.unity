@@ -2943,7 +2943,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 4
+  m_text: 0.5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8062,7 +8062,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1422673866
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8845,6 +8845,7 @@ MonoBehaviour:
   resolutionDropdown: {fileID: 762685848}
   loadingScreen: {fileID: 499073078}
   loadingBarFill: {fileID: 1784892786}
+  PlayerFighter: {fileID: 6226323376592142809, guid: 4aa6b6cc6a217414da8e9b4e1c8fd075, type: 3}
 --- !u!4 &1535907112
 Transform:
   m_ObjectHideFlags: 0
@@ -9765,7 +9766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1599797374
 RectTransform:
   m_ObjectHideFlags: 0

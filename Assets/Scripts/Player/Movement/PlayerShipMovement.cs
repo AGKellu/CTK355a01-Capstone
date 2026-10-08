@@ -34,6 +34,7 @@ public class PlayerShipMovement : MonoBehaviour
     private bool slowingDown;
     public float Ysens;
     public float Xsens;
+    public float masterSens;
     public bool Targeted;
     public int MissileCount;
     //After 3 consecutive seconds of having the targeted ship in the viewport, set the target of the missile to targeted fighter before firing, set the missile transform.movetowards to the target
@@ -41,12 +42,14 @@ public class PlayerShipMovement : MonoBehaviour
     //else, have the missile explode after 1 seconds when shot; missiles are half as fast as lasers 
     public int MaxMissiles;
     public bool MissileLoaded;
+    public GameObject DeathPanel; 
 
 
     [Header("Player Components")]
     private Rigidbody playerRB;
+    //public Rigidbody playerRB;
     //From ShipAttack Script
-    [SerializeField] private CinemachineVirtualCamera Camera;
+    [SerializeField] private CinemachineVirtualCamera VirtualCamera;
     [SerializeField] private CinemachineVirtualCamera ZoomCamera;
     [SerializeField] private CinemachineVirtualCamera DeathCamera;
 
@@ -68,6 +71,7 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private Image MissileTargetRadialUI;
     //[SerializeField] public GameObject TargetedFighterStill;
     public static PlayerShipMovement instance;
+    [SerializeField] private GameObject PlayerForward;
     //Make it so that the player has 3 seconds to get back to the playable space (beacons, big space station, etc) 
     //Make things on the top of the cockpit (hula people) to make it feel lived in
     //Change the circle to a radar 
@@ -117,34 +121,7 @@ public class PlayerShipMovement : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (TargetedFighter != null && !MissileLoaded && (MissileCount < MaxMissiles))
-        {
-            if (TargetedSeconds < 3)
-            {
-                if (Target60Seconds < 60)
-                {
-
-                    Target60Seconds++;
-                }
-                else if (Target60Seconds == 60)
-                {
-                    TargetedSeconds++;
-                    Debug.Log("Missile Second Checked");
-                    Target60Seconds = 0;
-
-                }
-                //TargetedSeconds += ((1 / 60) * Time.deltaTime);
-                //Debug.Log(TargetedSeconds);
-            }
-            if (TargetedSeconds >= 3)
-            {
-                MissileLoaded = true;
-                Debug.Log("Missile Loaded, put on the crosshairUI \nPut Missiles on the dashboard UI");
-
-                TargetedSeconds = 0;
-            }
-            //Debug.Log("The targeted seconds should be incrementing by 1/60 (due to 60 fps and max at 3 seconds)");
-        }
+        
 
         /* if (Input.GetAxis("Mouse X") > 0.1)
          {
@@ -185,6 +162,53 @@ public class PlayerShipMovement : MonoBehaviour
             //if (TargetedFighter.name.Contains("Buzzer"))
             //{
             //}
+            if (TargetedFighter != null && !MissileLoaded && (MissileCount < MaxMissiles))
+        {
+            if (TargetedSeconds < 3)
+            {
+                
+                //if (!TargetedFighter.transform.GetChild(0).GetComponent<Renderer>().isVisible)
+                Vector3 viewPos = Camera.main.WorldToViewportPoint(TargetedFighter.transform.position);
+                //camera.current
+                if (viewPos.x  > 1|| viewPos.y > 1|| viewPos.x < 0 || viewPos.y < 0)
+                {
+                    MissileTargetRadialUI.fillAmount = 0;
+                    Target60Seconds = 0;
+                    TargetedSeconds = 0;
+                    Debug.Log("Missile stopped locking on!");
+                }
+                else 
+                {
+                    if (Target60Seconds < 60)
+                {
+                    //MissileTargetRadialUI.fillAmount = Target60Seconds / 60f;
+                    Target60Seconds++;
+                    
+                    //MissileTargetRadialUI.fillAmount = Target60Seconds/(60f / TargetedSeconds);
+                }
+                else if (Target60Seconds == 60)
+                {
+                    TargetedSeconds++;
+                    MissileTargetRadialUI.fillAmount = TargetedSeconds/2f;
+                    
+                    Debug.Log("Missile Second Checked");
+                    Target60Seconds = 0;
+                    //MissileCount++;
+
+                }
+                }
+                //TargetedSeconds += ((1 / 60) * Time.deltaTime);
+                //Debug.Log(TargetedSeconds);
+            }
+            if (TargetedSeconds >= 3)
+            {
+                MissileLoaded = true;
+                Debug.Log("Missile Loaded, put on the crosshairUI \nPut Missiles on the dashboard UI");
+
+                TargetedSeconds = 0;
+            }
+            //Debug.Log("The targeted seconds should be incrementing by 1/60 (due to 60 fps and max at 3 seconds)");
+        }
             if (rolling)
             {
 
@@ -194,7 +218,7 @@ public class PlayerShipMovement : MonoBehaviour
                     //if (rotato.x > -360)
                     //{
                     //Yrotat -= 1;
-                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - Ysens, 1f);
+                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - (Ysens * masterSens), 1f);
                     //}
                     //Debug.Log("Move up");
                 }
@@ -203,7 +227,7 @@ public class PlayerShipMovement : MonoBehaviour
                     //if (rotato.x < 360)
                     //{
                     //Yrotat += 1;
-                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + Ysens, 1f);
+                    Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + (Ysens * masterSens) , 1f);
                     //}
                     //Debug.Log("Move down");
                 }
@@ -212,7 +236,7 @@ public class PlayerShipMovement : MonoBehaviour
                     //if (rotato.y > -360)
                     //{
                     //Xrotat += 1;
-                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + Xsens, 1f);
+                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + (Xsens * masterSens), 1f);
                     //}
                     //Debug.Log("Move right");
                 }
@@ -221,7 +245,7 @@ public class PlayerShipMovement : MonoBehaviour
                     // if (rotato.y < 360)
                     //{
                     //Xrotat -= 1;
-                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - Xsens, 1f);
+                    Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - (Xsens * masterSens), 1f);
                     // }
                     //Debug.Log("Move left");
                 }
@@ -280,7 +304,11 @@ public class PlayerShipMovement : MonoBehaviour
             FrameOfReference.transform.localRotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
             // playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
             //playerRB.AddForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
-            playerRB.AddRelativeForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
+
+            //Previous
+            //playerRB.AddRelativeForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
+            
+            transform.position = Vector3.MoveTowards(transform.position, PlayerForward.transform.position, speed / 20);
         }
     }
     void AddSpeed()
@@ -299,7 +327,7 @@ public class PlayerShipMovement : MonoBehaviour
         }
         else
         {
-
+            speedRadialUI.gameObject.GetComponent<AudioSource>().Play();
             speedingUp = true;
         }
     }
@@ -417,15 +445,19 @@ public class PlayerShipMovement : MonoBehaviour
         {
             if (MissileCount < MaxMissiles)
             {
+                //TargetedFighter
                 GameObject Missile = Instantiate(PlayerMissile, MissilePoint.transform.position, MissilePoint.transform.rotation);
                 //Missile.GetComponent<AmmunitionMoveScript>().target = 
                 Missile.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
                 if (MissileLoaded)
                 {
                     Missile.GetComponent<AmmunitionMoveScript>().target = TargetedFighter;
+                    
                 }
-                MissileLoaded = false;
+                MissileTargetRadialUI.fillAmount = 0;
+                //MissileLoaded = false;
                 MissileCount++;
+
             }
 
         }
@@ -436,21 +468,21 @@ public class PlayerShipMovement : MonoBehaviour
     }
     void Zoom()
     {
-        Camera.Priority = 0;
+        VirtualCamera.Priority = 0;
         ZoomCamera.Priority = 1;
         DeathCamera.Priority = 0;
     }
     void ZoomCancel()
     {
-        Camera.Priority = 1;
+        VirtualCamera.Priority = 1;
         ZoomCamera.Priority = 0;
         DeathCamera.Priority = 0;
     }
     void Target()
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 1000))
+        if (Physics.SphereCast(transform.position, .25f, transform.TransformDirection(Vector3.forward), out hit, 1000))
+        //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 1000))
         {
 
             //if allies are made, just comment the below if statement
@@ -483,6 +515,7 @@ public class PlayerShipMovement : MonoBehaviour
             //Debug.Log(hit.collider.gameObject.name);
         }
         else
+        //if (!Physics.SphereCast(transform.position, .25f, transform.TransformDirection(Vector3.forward), out hit, 1000))
         {
             if (TargetedFighter != null)
             {
@@ -515,22 +548,44 @@ public class PlayerShipMovement : MonoBehaviour
         //gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationZ;
         speed = 0;
         playerRB.linearVelocity = new Vector2(0, 0);
-        Camera.Priority = 0;
+        VirtualCamera.Priority = 0;
         ZoomCamera.Priority = 0;
         DeathCamera.Priority = 1;
         GetComponent<PlayerInput>().actions.FindActionMap("Movement").Disable();
+        GetComponent<PlayerInput>().actions.FindActionMap("Attacks").Disable();
         CanvasUIHolder.instance.gameObject.SetActive(false);
+        FrameOfReference.SetActive(false);
+        DeathPanel.SetActive(true);
         //CrosshairUI.SetActive(false);
         //DeathCamera.gameObject.SetActive(true);
 
         //Put rotate around player in update of deathcam script
         //Make sure to setactive(false) when respawning
     }
+    public void Respawn()
+    {
+        GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
+        transform.position = PlayerCruiser.GetComponent<CruiserScript>().PlayerSpawnPoint.transform.position;
+        //playerRB.constraints = RigidbodyConstraints.None;
+        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+        //speed = 
+        VirtualCamera.Priority = 1;
+        ZoomCamera.Priority = 0;
+        DeathCamera.Priority = 0;
+        CanvasUIHolder.instance.gameObject.SetActive(true);
+        FrameOfReference.SetActive(true);
+        GetComponent<PlayerInput>().actions.FindActionMap("Movement").Enable();
+        GetComponent<PlayerInput>().actions.FindActionMap("Attacks").Enable();
+        //transform.position = SpawnPosition
+        dead = false;
+        DeathPanel.SetActive(false);
+    }
     void OnCollisionEnter(Collision coll)
     {
         if (coll.gameObject.CompareTag("Asteroid"))
         {
             //Health-=1;
+            //This is usually 1
             TakeDamage(1);
         }
     }

@@ -12,7 +12,15 @@ public class AmmunitionMoveScript : MonoBehaviour
     {
         //AmmoRB = gameObject.GetComponent<Rigidbody>();
         transform.parent = null;
-        Destroy(gameObject, 3);
+        if (target != null)
+        {
+           // Debug.Log(target.name);
+        }
+        else 
+        {
+            
+        Destroy(gameObject, 5);
+        }
         //transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
@@ -20,7 +28,16 @@ public class AmmunitionMoveScript : MonoBehaviour
     void Update()
     {
         //AmmoRB.AddRelativeForce(Vector3.forward * (5 * Time.deltaTime ), ForceMode.Acceleration);
+        if (target != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+
+        }
+        else 
+        {
+            
         transform.position += forward * speed * Time.deltaTime;
+        }
         //speed = 2.5f;
     }
     void OnTriggerEnter(Collider coll)
@@ -53,5 +70,12 @@ public class AmmunitionMoveScript : MonoBehaviour
 
             }
         }
+    }
+    void OnDestroy()
+    {
+        //if (PlayerShipMovement.instance.MissileLoaded)
+        //{
+          //  PlayerShipMovement.instance.MissileLoaded  = 
+        //}
     }
 }

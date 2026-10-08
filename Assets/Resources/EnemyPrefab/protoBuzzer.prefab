@@ -203,7 +203,7 @@ Transform:
   m_GameObject: {fileID: 5791847823591284092}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -11.920969, y: -0.038729995, z: -4.55617}
+  m_LocalPosition: {x: 0.08, y: -0.04, z: 10.98}
   m_LocalScale: {x: 0.125, y: 0.25, z: 0.125}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -299,6 +299,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &9201074266148702140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1888491425826660890}
+  m_Layer: 0
+  m_Name: EnemyForward
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1888491425826660890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201074266148702140}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.08, y: -0.040000893, z: 25.98}
+  m_LocalScale: {x: 0.125, y: 0.25, z: 0.125}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2049566060744899402}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1001 &2016271247613631649
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -378,6 +409,9 @@ PrefabInstance:
       addedObject: {fileID: 8814141440870344101}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1888491425826660890}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 6759008058370529621}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}
@@ -441,7 +475,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &3022172168202431889
 MonoBehaviour:
@@ -458,12 +492,12 @@ MonoBehaviour:
   Health: 1
   LaserPrefab: {fileID: 3132690074331340860, guid: 3c4898541dfd28b4a9a03f93fd10ad6f, type: 3}
   LaserPoint: {fileID: 5791847823591284092}
-  cooldown: 3
+  cooldown: 5
   TriggerDistance: 15
   TargetFighterStill: {fileID: 21300000, guid: 4a82e8334c381fb429fba04c970ebb7a, type: 3}
   TargetedOverlay: {fileID: 4686302125937589119}
-  speed: 1
-  Spinner: {fileID: 7373266016632691445}
+  speed: 0.025
+  EnemyForward: {fileID: 9201074266148702140}
 --- !u!4 &2049566060744899402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}

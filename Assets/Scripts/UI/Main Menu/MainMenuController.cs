@@ -46,6 +46,8 @@ public class MainMenuController : MonoBehaviour
     public GameObject loadingScreen;
     public Image loadingBarFill;
 
+    [Header("Hate")]
+    public GameObject PlayerFighter;
     //public SaveLoad SaveLoad;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -87,31 +89,14 @@ public class MainMenuController : MonoBehaviour
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(_newGameLevel, LoadSceneMode.Additive);
             while (!asyncLoad.isDone)
             {
+                loadingScreen.SetActive(true);
                 loadingBarFill.fillAmount = asyncLoad.progress;
                 yield return null;
 
             }
 
-            //GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            //GameObject rotators = GameObject.FindGameObjectWithTag("Rotator");
-           // SceneManager.MoveGameObjectToScene(rotators, SceneManager.GetSceneByName(_newGameLevel));
-            //foreach (GameObject player in players)
-            //{
-                //if (player.name == "Isabelle")
-                //{
-                // Debug.Log(player.gameObject.name);
-               // SceneManager.MoveGameObjectToScene(player, SceneManager.GetSceneByName(_newGameLevel));
-                if (_newGameLevel == "ProtoScene")
-                {
-                   // if (player.name == "Isabelle")
-                   // {
-                       // Player playerScript = player.GetComponent<Player>();
-                     
-                    
-                
-                }
-               
-            
+            GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
+            PlayerCruiser.GetComponent<CruiserScript>().SpawnPlayer(AudioListener.volume, mainControllerSens);
             SceneManager.UnloadSceneAsync(currentScene);
 
     }
@@ -169,7 +154,7 @@ public class MainMenuController : MonoBehaviour
     public void SetControllerSens(float sensitivity)
     {
         mainControllerSens = Mathf.RoundToInt(sensitivity);
-        ControllerSensTextValue.text = sensitivity.ToString("0");
+        ControllerSensTextValue.text = sensitivity.ToString("0.0");
     }
     public void ResetButton(string MenuType)
     {
