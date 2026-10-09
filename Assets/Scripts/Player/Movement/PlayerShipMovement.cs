@@ -16,6 +16,7 @@ public class PlayerShipMovement : MonoBehaviour
     private InputAction AltFire;
     private InputAction FireMissile;
     private InputAction FireSmoke;
+    private InputAction RespawnAction;
 
     [Header("Variables")]
     private Vector3 pos;
@@ -35,9 +36,9 @@ public class PlayerShipMovement : MonoBehaviour
     public float Ysens;
     public float Xsens;
     public float masterSens;
+    public bool invertY;
     public bool Targeted;
     public int MissileCount;
-    //After 3 consecutive seconds of having the targeted ship in the viewport, set the target of the missile to targeted fighter before firing, set the missile transform.movetowards to the target
     //if the target has smoke behind them(a box trigger that turns off after 1 second), missile randomly rotates in any 4 cardinal directions (towards up/down, towards left/right) from 30 to 90, stops movetowards, then keeps going for .5 seconds, then explodes 
     //else, have the missile explode after 1 seconds when shot; missiles are half as fast as lasers 
     public int MaxMissiles;
@@ -113,6 +114,8 @@ public class PlayerShipMovement : MonoBehaviour
         FireMissile.performed += ctx => ShootLaser("Missile");
         FireSmoke = InputSystem.actions.FindAction("Attacks/FireSmokeScreen");
         FireSmoke.performed += ctx => SmokeScreen();
+        RespawnAction = InputSystem.actions.FindAction("UI/Respawn");
+        RespawnAction.performed += ctx => Respawn();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
         DeathCamera.LookAt = gameObject.transform;
     }
@@ -120,41 +123,6 @@ public class PlayerShipMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        
-
-        /* if (Input.GetAxis("Mouse X") > 0.1)
-         {
-             if (Yrotat < 360)
-             {
-                 //Yrotat += 1;
-                 Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + 2, 1f);
-             }
-         }
-         if (Input.GetAxis("Mouse X") < -0.1)
-         {
-             if (Yrotat > -360)
-             {
-                 //Yrotat -= 1;
-                 Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - 2, 1f);
-             }
-         }
-         if (Input.GetAxis("Mouse Y") > 0.1)
-         {
-             if (Xrotat > -360)
-             {
-                 //Xrotat -= 1;
-                 Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - 2, 1f);
-             }
-         }
-         if (Input.GetAxis("Mouse Y") < -0.1)
-         {
-             if (Xrotat < 360)
-             {
-                 //Xrotat += 1;
-                 Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + 2, 1f);
-             }
-         }*/
         if (!dead)
         {
             //if (Targeted)
@@ -189,7 +157,7 @@ public class PlayerShipMovement : MonoBehaviour
                 else if (Target60Seconds == 60)
                 {
                     TargetedSeconds++;
-                    MissileTargetRadialUI.fillAmount = TargetedSeconds/2f;
+                    MissileTargetRadialUI.fillAmount = TargetedSeconds/3f;
                     
                     Debug.Log("Missile Second Checked");
                     Target60Seconds = 0;
@@ -215,39 +183,27 @@ public class PlayerShipMovement : MonoBehaviour
                 //DO SMOOTH step with everything below
                 if (rotato.x < -0.1)
                 {
-                    //if (rotato.x > -360)
-                    //{
-                    //Yrotat -= 1;
+                
                     Yrotat = Mathf.SmoothStep(Yrotat, Yrotat - (Ysens * masterSens), 1f);
-                    //}
-                    //Debug.Log("Move up");
+             
                 }
                 else if (rotato.x > 0.1)
                 {
-                    //if (rotato.x < 360)
-                    //{
-                    //Yrotat += 1;
+                    
                     Yrotat = Mathf.SmoothStep(Yrotat, Yrotat + (Ysens * masterSens) , 1f);
-                    //}
-                    //Debug.Log("Move down");
+                
                 }
                 if (rotato.y < -0.1)
                 {
-                    //if (rotato.y > -360)
-                    //{
-                    //Xrotat += 1;
+                    
                     Xrotat = Mathf.SmoothStep(Xrotat, Xrotat + (Xsens * masterSens), 1f);
-                    //}
-                    //Debug.Log("Move right");
+                 
                 }
                 else if (rotato.y > 0.1)
                 {
-                    // if (rotato.y < 360)
-                    //{
-                    //Xrotat -= 1;
+                   
                     Xrotat = Mathf.SmoothStep(Xrotat, Xrotat - (Xsens * masterSens), 1f);
-                    // }
-                    //Debug.Log("Move left");
+             
                 }
             }
 
@@ -268,7 +224,6 @@ public class PlayerShipMovement : MonoBehaviour
                 }
             }
 
-            //following code is to be if incremental is false, put an if method here
             if (IncrementalSpeed)
             {
 
@@ -299,16 +254,26 @@ public class PlayerShipMovement : MonoBehaviour
                     }
                 }
             }
+            if (invertY)
+            {
 
+            }
+            else
+            {
+                
             transform.rotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
             FrameOfReference.transform.localRotation = Quaternion.Euler(Xrotat, Yrotat, Zrotat);
+            }
             // playerRB.AddRelativeForce(Vector3.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
             //playerRB.AddForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
 
             //Previous
             //playerRB.AddRelativeForce(transform.forward * ((speed * 50) * Time.deltaTime), ForceMode.Acceleration);
-            
+            if (speed > 0)
+            {
+                
             transform.position = Vector3.MoveTowards(transform.position, PlayerForward.transform.position, speed / 20);
+            }
         }
     }
     void AddSpeed()
@@ -421,16 +386,7 @@ public class PlayerShipMovement : MonoBehaviour
     }
     void ShootLaser(string Projectile)
     {
-        //RaycastHit hit;
-        //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
-        //{
-        //Debug.Log("Hit something");
-        //if (hit.collider.gameObject.CompareTag("Enemy"))
-        //{
-        //  Destroy(hit.collider.gameObject);
-        // Debug.Log("Hit enemy\nDo damage");
-        //}
-        // }
+        
         if (Projectile == "Laser")
         {
 
@@ -455,9 +411,9 @@ public class PlayerShipMovement : MonoBehaviour
                     
                 }
                 MissileTargetRadialUI.fillAmount = 0;
-                //MissileLoaded = false;
+                MissileLoaded = false;
                 MissileCount++;
-
+                TargetedFighter.GetComponent<MasterScript>().DeTarget();
             }
 
         }
@@ -481,7 +437,7 @@ public class PlayerShipMovement : MonoBehaviour
     void Target()
     {
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position, .25f, transform.TransformDirection(Vector3.forward), out hit, 1000))
+        if (Physics.SphereCast(transform.position, .5f, transform.TransformDirection(Vector3.forward), out hit, 1000))
         //if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 1000))
         {
 
@@ -491,19 +447,14 @@ public class PlayerShipMovement : MonoBehaviour
                 if (hit.collider.gameObject != TargetedFighter) // Might have hotswapping targets or targetting nothing if hitting void
                 {
                     TargetedFighter = hit.collider.gameObject;
-
+                    CanvasUIHolder.instance.TargetFighterHealth.text = (TargetedFighter.GetComponent<MasterScript>().Health/2).ToString();
                     Targeted = true;
                 }
                 else
                 {
-                    //if (TargetedFighter.name.Contains("Buzzer"))
-                    //{
-
+                   
                     TargetedFighter.GetComponent<MasterScript>().DeTarget();
-                    //}
-                    //TargetedFighter = null;
-                    //Debug.Log(TargetedFighter.name);
-                    //Targeted = false;
+                   
                 }
 
                 //if (hit.collider.gameObject.name.Contains("Buzzer"))
@@ -564,8 +515,12 @@ public class PlayerShipMovement : MonoBehaviour
     }
     public void Respawn()
     {
-        GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
-        transform.position = PlayerCruiser.GetComponent<CruiserScript>().PlayerSpawnPoint.transform.position;
+        if (dead)
+        {
+            GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
+            transform.position = PlayerCruiser.GetComponent<CruiserScript>().PlayerSpawnPoint.transform.position;
+            Health = 5;
+            //MissileCount = 0;
         //playerRB.constraints = RigidbodyConstraints.None;
         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         //speed = 
@@ -576,9 +531,12 @@ public class PlayerShipMovement : MonoBehaviour
         FrameOfReference.SetActive(true);
         GetComponent<PlayerInput>().actions.FindActionMap("Movement").Enable();
         GetComponent<PlayerInput>().actions.FindActionMap("Attacks").Enable();
-        //transform.position = SpawnPosition
+            //transform.position = SpawnPosition
+            DeathPanel.SetActive(false);
         dead = false;
-        DeathPanel.SetActive(false);
+        
+        }
+        
     }
     void OnCollisionEnter(Collision coll)
     {
