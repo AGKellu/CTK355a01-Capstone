@@ -31,13 +31,16 @@ public class AmmunitionMoveScript : MonoBehaviour
         if (target != null)
         {
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, (target.transform.position- transform.position), speed * Time.deltaTime, 0.0f);
+            //Vector3 newDirection = Vector3.RotateTowards(transform.forward, (target.transform.position - transform.position), 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
         }
-        else 
+        else
         {
-            
-        transform.position += forward * speed * Time.deltaTime;
+
+            transform.position += forward * speed * Time.deltaTime;
         }
+        
         //speed = 2.5f;
     }
     void OnTriggerEnter(Collider coll)
@@ -50,8 +53,17 @@ public class AmmunitionMoveScript : MonoBehaviour
             }
             else
             {
+                if (target != null)
+                {
+                    coll.gameObject.GetComponent<MasterScript>().TakeDamage(2);
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    
                 coll.gameObject.GetComponent<MasterScript>().TakeDamage(1);
                 Destroy(gameObject);
+                }
             
             }
             //Destroy(coll.gameObject);

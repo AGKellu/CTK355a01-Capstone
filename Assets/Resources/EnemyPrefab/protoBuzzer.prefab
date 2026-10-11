@@ -344,7 +344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.125
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}
       propertyPath: m_LocalScale.z
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6374a253796633246917138e978a8475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MasterScript
-  Health: 1
+  Health: 4
   LaserPrefab: {fileID: 3132690074331340860, guid: 3c4898541dfd28b4a9a03f93fd10ad6f, type: 3}
   LaserPoint: {fileID: 5791847823591284092}
   cooldown: 5
@@ -498,6 +498,9 @@ MonoBehaviour:
   TargetedOverlay: {fileID: 4686302125937589119}
   speed: 0.025
   EnemyForward: {fileID: 9201074266148702140}
+  Buzzer: 1
+  Engineer: 0
+  Bomber: 0
 --- !u!4 &2049566060744899402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}

@@ -14,8 +14,8 @@ public class MainMenuController : MonoBehaviour
     [Header("Gameplay Settings")]
     [SerializeField] private TMP_Text ControllerSensTextValue = null;
     [SerializeField] private Slider controllerSensSlider = null;
-    [SerializeField] private int defaultSen = 4;
-    public int mainControllerSens = 4;
+    [SerializeField] private float defaultSen = .5f;
+    public float mainControllerSens;
 
     [Header("Toggle Settings")]
     [SerializeField] private Toggle invertYToggle = null;
@@ -95,8 +95,10 @@ public class MainMenuController : MonoBehaviour
 
             }
 
-            GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
-            PlayerCruiser.GetComponent<CruiserScript>().SpawnPlayer(AudioListener.volume, mainControllerSens);
+        GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
+        GameObject EnemyCruiser = GameObject.Find("EnemyCruiser");
+        PlayerCruiser.GetComponent<CruiserScript>().SpawnPlayer(AudioListener.volume, mainControllerSens);
+        EnemyCruiser.GetComponent<CruiserScript>().RealStart();
             SceneManager.UnloadSceneAsync(currentScene);
 
     }
@@ -108,11 +110,16 @@ public class MainMenuController : MonoBehaviour
     public void SetVolume(float volume)
     {
         
-        AudioListener.volume = volume;
-        volumeTextVolume.text = volume.ToString("0.0");
+        float AudioFloat = Mathf.Round(volume * 10f) / 10f;
+        //_brightnessLevel = brightnessFloat;
+        //brightnessTextValue.text = _brightnessLevel.ToString("0.0");
+        AudioListener.volume = AudioFloat;
+        volumeTextVolume.text = AudioListener.volume.ToString("0.0");
     }
     public void VolumeApply()
     {
+        Debug.Log(volumeSlider.value);
+       // SetVolume(volumeSlider.value);
         PlayerPrefs.SetFloat("masterVolume", AudioListener.volume);
         StartCoroutine(ConfirmationBox());
     }
@@ -131,8 +138,9 @@ public class MainMenuController : MonoBehaviour
     }
     public void SetBrightness(float brightness)
     {
-        _brightnessLevel = brightness;
-        brightnessTextValue.text = brightness.ToString("0.0");
+        float brightnessFloat = Mathf.Round(brightness * 10f) / 10f;
+        _brightnessLevel = brightnessFloat;
+        brightnessTextValue.text = _brightnessLevel.ToString("0.0");
     }
     public void SetFullscreen(bool isfullscreen)
     {
@@ -153,8 +161,9 @@ public class MainMenuController : MonoBehaviour
     }
     public void SetControllerSens(float sensitivity)
     {
-        mainControllerSens = Mathf.RoundToInt(sensitivity);
-        ControllerSensTextValue.text = sensitivity.ToString("0.0");
+        float sensFloat = Mathf.Round(sensitivity * 10f) / 10f;
+        mainControllerSens = sensFloat;
+        ControllerSensTextValue.text = mainControllerSens.ToString("F1");
     }
     public void ResetButton(string MenuType)
     {

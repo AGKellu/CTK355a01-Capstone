@@ -16,69 +16,79 @@ public class MasterScript : MonoBehaviour
     public GameObject TargetedOverlay;
     public float speed;
     public GameObject EnemyForward;
+    public bool Buzzer, Engineer, Bomber;
     //private GameObject Player;
     //private PlayerShipMovement PlayerShipMovement;
-   // public GameObject Spinner;
+    // public GameObject Spinner;
     void Start()
     {
-       // Player = GameObject.FindGameObjectWithTag("Player");
+        // Player = GameObject.FindGameObjectWithTag("Player");
     }
     // Update is called once per frame
     void Update()
     {
         //Below code is commented to stop movement for testing 
-        //transform.position= Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
-        //if (PlayerShipMovement.instance != null)
-        
-            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
-        transform.rotation = Quaternion.LookRotation(newRotate);
-        //        float distanceToPlayer = Vector3.distance(transform.position, Player.transform.position);
-        if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
+        if (Buzzer)
         {
-            if (!onCoolDown)
-            {
-                if (!PlayerShipMovement.instance.dead) // If player is alive
-                {
+            transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
 
-                    Shoot();
+            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
+            transform.rotation = Quaternion.LookRotation(newRotate);
+            if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
+            {
+                if (!onCoolDown)
+                {
+                    if (!PlayerShipMovement.instance.dead) // If player is alive
+                    {
+
+                      //  Shoot();
+                    }
+                }
+            }
+            if (PlayerShipMovement.instance.TargetedFighter == gameObject)
+            {
+                if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
+                {
+                    CanvasUIHolder.instance.TargetFighterStill.SetActive(true);
+                }
+                CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
+                float dist = Mathf.Round(Vector3.Distance(PlayerShipMovement.instance.gameObject.transform.position, transform.position)) * 10f / 10f;
+
+                CanvasUIHolder.instance.TargetFighterDistance.text = dist.ToString("0.0");
+                
+                if (!TargetedOverlay.activeSelf)
+                {
+                    TargetedOverlay.SetActive(true);
+                }
+            }
+            else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
+            {
+                if (TargetedOverlay.activeSelf)
+                {
+                    TargetedOverlay.SetActive(false);
                 }
             }
         }
-        //Spinner.transform.RotateAround(LaserPoint.transform.position, Vector3.up, 20 * Time.deltaTime);
-        if (PlayerShipMovement.instance.TargetedFighter == gameObject)
-        {
-            if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
-            {
-                CanvasUIHolder.instance.TargetFighterStill.SetActive(true);
-            }
-            CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
-            //CanvasUIHolder.instance.TargetFighterStill.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z);
-            if (!TargetedOverlay.activeSelf)
-            {
-                Debug.Log("Hi");
-                TargetedOverlay.SetActive(true);
-            }
-           // Debug.Log(Health);
-           // Debug.Log(Vector3.Distance(gameObject.transform.position, PlayerShipMovement.instance.gameObject.transform.position).ToString("F2"));
-        }
-        else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
-        {
-           // Debug.Log("Why is this still added");
-            if (TargetedOverlay.activeSelf)
-            {
-                Debug.Log("what");
-                TargetedOverlay.SetActive(false);
-            }
-        }
-        
-        
+        //if (Engineer)
+        //{
+            
+        //}
+
     }
     public void TakeDamage(int Damage)
     {
+        //Debug.Log(Damage);
         Health -= Damage;
+        //Debug.Log(Health);
+        if (PlayerShipMovement.instance.TargetedFighter == gameObject)
+        {
+            CanvasUIHolder.instance.TargetFighterHealth.text = (Health/2).ToString();
+            //Debug.Log(Health);
+            
+        }
         if (Health <= 0)
         {
-            if (PlayerShipMovement.instance.TargetedFighter = gameObject) // Go to PlayerShipMovement.cs and check if TargetedFighter is an object
+            if (PlayerShipMovement.instance.TargetedFighter == gameObject) // Go to PlayerShipMovement.cs and check if TargetedFighter is an object
             {
                 DeTarget(); // Destroy enemy sprites and reset targeting
             }
@@ -92,8 +102,6 @@ public class MasterScript : MonoBehaviour
         Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
         onCoolDown = true;
         StartCoroutine(Wait(cooldown));
-        // GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(90, transform.rotation.y, 0));
-        //Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
     }
     private IEnumerator Wait(int Seconds)
     {
@@ -102,14 +110,17 @@ public class MasterScript : MonoBehaviour
     }
     public void DeTarget() // Handles sprite deletion and resetting targeting
     {
-        Debug.Log("What");
-                
+        //Debug.Log("What");
+
+
+        //if (CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite == TargetFighterStill)
+        //{
+        CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = null;
+        //}
+        CanvasUIHolder.instance.TargetFighterHealth.text = null;
+        CanvasUIHolder.instance.TargetFighterDistance.text = null;
         PlayerShipMovement.instance.TargetedFighter = null;
         PlayerShipMovement.instance.Targeted = false;
-        if (CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite == TargetFighterStill)
-        {
-            CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = null;
-        }
-        
+
     }
 }
