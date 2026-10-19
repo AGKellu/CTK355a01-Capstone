@@ -94,11 +94,15 @@ public class MainMenuController : MonoBehaviour
                 yield return null;
 
             }
-
+      //  GameObject[] Stations = GameObject.FindGameObjectsWithTag("Station");
+       // for (int i = 0; i < Stations.Count; i++)
+       // {
+          //  Debug.Log(Vector3.Distance(Pla))
+        //}
         GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
-        GameObject EnemyCruiser = GameObject.Find("EnemyCruiser");
+        //GameObject EnemyCruiser = GameObject.Find("EnemyCruiser");
         PlayerCruiser.GetComponent<CruiserScript>().SpawnPlayer(AudioListener.volume, mainControllerSens);
-        EnemyCruiser.GetComponent<CruiserScript>().RealStart();
+        //EnemyCruiser.GetComponent<CruiserScript>().RealStart();
             SceneManager.UnloadSceneAsync(currentScene);
 
     }

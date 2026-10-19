@@ -19,7 +19,8 @@ namespace Ilumisoft.RadarSystem
 
         [SerializeField, Min(1)]
         [Tooltip("The detection range of the radar in meter")]
-        private float range = 20;
+        //private float range = 20; normal range is 20 meters
+        private float range = 500;
 
         [SerializeField]
         [Tooltip("Whether the radar should apply the roation of the player")]

@@ -54,6 +54,11 @@ public class CruiserScript : MonoBehaviour
         PlayerShip.transform.position = PlayerSpawnPoint.transform.position;
         PlayerShip.transform.rotation = Quaternion.identity;
         PlayerShip.transform.parent = null;
+        GameObject[] Stations = GameObject.FindGameObjectsWithTag("Station");
+        for(int i=0; i < Stations.Length; i++)
+        {
+            Debug.Log(Vector3.Distance(Stations[i].transform.position, PlayerShip.transform.position));
+        }
     }
     public void RespawnPlayer()
     {
