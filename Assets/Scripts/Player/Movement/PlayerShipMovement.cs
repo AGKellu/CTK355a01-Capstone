@@ -28,6 +28,7 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private float Yrotat;
     [SerializeField] private float Xrotat;
     private bool rolling;
+    public bool money;
     //From ShipAttack Script
     public bool dead;
     private int NormFOV = 60;
@@ -48,7 +49,8 @@ public class PlayerShipMovement : MonoBehaviour
     public GameObject DeathPanel;
     public bool ableToMove;
     public bool ableToAttack;
-
+    public bool outside;
+    public Vector3 lastInsidePosition;
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -122,13 +124,20 @@ public class PlayerShipMovement : MonoBehaviour
         RespawnAction.performed += ctx => Respawn();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
         DeathCamera.LookAt = gameObject.transform;
-        
+
 
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (!dead && outside)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, lastInsidePosition, speed / 20);
+            Vector3 targetDirection = lastInsidePosition - transform.position;
+            Vector3 newDirection = Vector3.RotateTowards(transform.position, targetDirection, Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
+        }
         if (!dead && ableToMove)
         {
             //if (Targeted)
@@ -372,38 +381,38 @@ public class PlayerShipMovement : MonoBehaviour
     {
         if (ableToAttack)
         {
-
-        }
-        if (Projectile == "Laser")
-        {
-
-            //GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, Quaternion.Euler(Xrotat, 0, 0));
-            GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, LaserPoint1.transform.rotation);
-            Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
-            //GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(Xrotat, 0, 0));
-            GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, LaserPoint2.transform.rotation);
-            Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
-        }
-        else if (Projectile == "Missile")
-        {
-            if (MissileCount < MaxMissiles)
+            if (Projectile == "Laser")
             {
-                //TargetedFighter
-                GameObject Missile = Instantiate(PlayerMissile, MissilePoint.transform.position, MissilePoint.transform.rotation);
-                //Missile.GetComponent<AmmunitionMoveScript>().target = 
-                Missile.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
-                if (MissileLoaded)
-                {
-                    Missile.GetComponent<AmmunitionMoveScript>().target = TargetedFighter;
 
-                }
-                MissileTargetRadialUI.fillAmount = 0;
-                MissileLoaded = false;
-                MissileCount++;
-                TargetedFighter.GetComponent<MasterScript>().DeTarget();
+                //GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, Quaternion.Euler(Xrotat, 0, 0));
+                GameObject Laser1 = Instantiate(LaserPrefab, LaserPoint1.transform.position, LaserPoint1.transform.rotation);
+                Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+                //GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(Xrotat, 0, 0));
+                GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, LaserPoint2.transform.rotation);
+                Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
             }
+            else if (Projectile == "Missile")
+            {
+                if (MissileCount < MaxMissiles)
+                {
+                    //TargetedFighter
+                    GameObject Missile = Instantiate(PlayerMissile, MissilePoint.transform.position, MissilePoint.transform.rotation);
+                    //Missile.GetComponent<AmmunitionMoveScript>().target = 
+                    Missile.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
+                    if (MissileLoaded)
+                    {
+                        Missile.GetComponent<AmmunitionMoveScript>().target = TargetedFighter;
 
+                    }
+                    MissileTargetRadialUI.fillAmount = 0;
+                    MissileLoaded = false;
+                    MissileCount++;
+                    TargetedFighter.GetComponent<MasterScript>().DeTarget();
+                }
+
+            }
         }
+
     }
     void SmokeScreen()
     {
