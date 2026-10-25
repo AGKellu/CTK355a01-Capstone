@@ -2,3 +2,24 @@ Heavy laser
 
 	Make the lines segmented and color as the laser is warming up, they should all be red on fire then quickly power down the line before restarting the animation
 	Potentially make black lines between the cubes to make them stand out more
+
+
+
+
+
+
+POSTERS
+
+	These go on the interior of the players ship for downtime between missions or background or whatever we end up using it for.
+
+
+	Tri-Tech [Corpo poster (comes free with every Tri-Tech vehicle)]
+
+		Cyan 3 plot diamond above motto
+		"Tri when you fly! Tri-Tech"
+
+
+	Apoxix-5 Never forget [A poster referencing a fallen planet]
+
+		A picture of a space-marine-esque suit of power armor standing in the center of the frame
+		"Remember them, remember Apoxix-5"
