@@ -8,6 +8,16 @@ Heavy laser
 
 
 
+Subtractive meld of the meshes, little circles scattered
+
+
+Click wrench icon, add boolean modifier, operand type objetc, object is what you want to be the modifier
+
+
+
+
+
+
 POSTERS
 
 	These go on the interior of the players ship for downtime between missions or background or whatever we end up using it for.
