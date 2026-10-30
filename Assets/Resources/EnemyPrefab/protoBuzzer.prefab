@@ -550,6 +550,7 @@ MonoBehaviour:
   Buzzer: 1
   Engineer: 0
   Bomber: 0
+  Camera: {fileID: 0}
 --- !u!4 &2049566060744899402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}

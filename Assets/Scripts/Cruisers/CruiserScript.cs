@@ -47,7 +47,6 @@ public class CruiserScript : MonoBehaviour
     }
     public void SpawnPlayer(float Volume, float sens)
     {
-        
         GameObject PlayerShip = Instantiate(PlayerFighter, PlayerSpawnPoint.transform);
         PlayerShip.GetComponent<AudioSource>().volume = Volume;
         PlayerShip.GetComponent<PlayerShipMovement>().masterSens = sens;
