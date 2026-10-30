@@ -6,12 +6,19 @@ Heavy laser
 
 
 
+Cockpit
+
+The view is from the positive Y-Axis and three notches zoomed in
+
+I added a bottom plat and need to do subtractive melding to cut off the edges that are visible
+
+
 
 
 Subtractive meld of the meshes, little circles scattered
 
 
-Click wrench icon, add boolean modifier, operand type objetc, object is what you want to be the modifier
+Click wrench icon, add boolean modifier, operand type object, object is what you want to be the modifier
 
 
 
