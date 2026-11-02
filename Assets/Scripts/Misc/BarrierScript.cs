@@ -19,10 +19,15 @@ public class BarrierScript : MonoBehaviour
     {
         if (coll.CompareTag("Player"))
         {
-            PlayerShipMovement.instance.outside = true;
-            PlayerShipMovement.instance.lastInsidePosition = Sun.transform.position;
-            PlayerShipMovement.instance.ableToMove = false;
-            PlayerShipMovement.instance.ableToAttack = false;
+            if (Inner)
+            {
+
+                //PlayerShipMovement.instance.lastInsidePosition = Sun.transform.position;
+                PlayerShipMovement.instance.outside = true;
+                PlayerShipMovement.instance.ableToMove = false;
+                PlayerShipMovement.instance.ableToAttack = false;
+            }
+            
             //   PlayerShipMovement.instance.gameObject.transform.Rotate(new Vector3(0, PlayerShipMovement.instance.gameObject.transform.eulerAngles.y + 180,0), Space.Self);
 
         }

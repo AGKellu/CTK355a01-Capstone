@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using System.IO;
 using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class MainMenuController : MonoBehaviour
     [Header("Levels To Load")]
     public string _newGameLevel;
     private string levelToLoad;
+    public string loadGameLevel;
     //[SerializeField] private GameObject noSavedGameDialog = null;
 
     [Header("Resolution Dropdowns")]
@@ -53,7 +55,7 @@ public class MainMenuController : MonoBehaviour
     void Start()
     {
         resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();   
+        resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
@@ -62,7 +64,7 @@ public class MainMenuController : MonoBehaviour
             options.Add(option);
             if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
             {
-                currentResolutionIndex =i;
+                currentResolutionIndex = i;
             }
         }
         resolutionDropdown.AddOptions(options);
@@ -80,30 +82,75 @@ public class MainMenuController : MonoBehaviour
     {
         StartCoroutine(LoadNewGameScene());
     }
+    public void LoadGameDialogYes()
+    {
+        StartCoroutine(LoadGameScene());
+    }
     IEnumerator LoadNewGameScene()
     {
-        //IEnumerator LoadSceneAsync()
-        //{
-            Scene currentScene = SceneManager.GetActiveScene();
 
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(_newGameLevel, LoadSceneMode.Additive);
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(_newGameLevel, LoadSceneMode.Additive);
+        while (!asyncLoad.isDone)
+        {
+            loadingScreen.SetActive(true);
+            loadingBarFill.fillAmount = asyncLoad.progress;
+            yield return null;
+
+        }
+        GameObject PlayerShip = Instantiate(PlayerFighter, SceneManager.GetSceneByName(_newGameLevel)) as GameObject;
+
+        PlayerShip.GetComponent<AudioSource>().volume = AudioListener.volume;
+        PlayerShip.GetComponent<PlayerShipMovement>().masterSens = mainControllerSens;
+        PlayerShip.transform.position = new Vector3(-1.59810019f, -8.75f, -49.4675064f);
+        PlayerShip.transform.rotation = Quaternion.identity;
+        PlayerShip.transform.parent = null;
+        GameObject[] Stations = GameObject.FindGameObjectsWithTag("Station");
+        for (int i = 0; i < Stations.Length; i++)
+        {
+            Debug.Log(Vector3.Distance(Stations[i].transform.position, PlayerShip.transform.position));
+        }
+        //GameObject EnemyCruiser = GameObject.Find("EnemyCruiser");
+        //PlayerCruiser.GetComponent<CruiserScript>().SpawnPlayer(AudioListener.volume, mainControllerSens);
+        //EnemyCruiser.GetComponent<CruiserScript>().RealStart();
+        SceneManager.UnloadSceneAsync(currentScene);
+
+    }
+    IEnumerator LoadGameScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (File.Exists(Application.dataPath + "/save.txt"))
+        {
+            string lastStationName = SaveLoad.instance.SetString();
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(loadGameLevel, LoadSceneMode.Additive);
             while (!asyncLoad.isDone)
             {
                 loadingScreen.SetActive(true);
                 loadingBarFill.fillAmount = asyncLoad.progress;
                 yield return null;
-
             }
-      //  GameObject[] Stations = GameObject.FindGameObjectsWithTag("Station");
-       // for (int i = 0; i < Stations.Count; i++)
-       // {
-          //  Debug.Log(Vector3.Distance(Pla))
-        //}
-        GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
-        //GameObject EnemyCruiser = GameObject.Find("EnemyCruiser");
-        PlayerCruiser.GetComponent<CruiserScript>().SpawnPlayer(AudioListener.volume, mainControllerSens);
-        //EnemyCruiser.GetComponent<CruiserScript>().RealStart();
+            GameObject PlayerShip = Instantiate(PlayerFighter, SceneManager.GetSceneByName(loadGameLevel)) as GameObject;
+
+            PlayerShip.GetComponent<AudioSource>().volume = AudioListener.volume;
+            PlayerShip.GetComponent<PlayerShipMovement>().masterSens = mainControllerSens;
+            //PlayerShip.transform.position = new Vector3(-1.59810019f, -8.75f, -49.4675064f);
+            PlayerShip.transform.rotation = Quaternion.identity;
+            PlayerShip.transform.parent = null;
+            GameObject[] Stations = GameObject.FindGameObjectsWithTag("Station");
+            foreach (GameObject Station in Stations)
+            {
+                if (Station.name == lastStationName)
+                {
+                    PlayerShip.transform.position = Station.GetComponent<StationScript>().spawnPosition;
+                }
+            }
             SceneManager.UnloadSceneAsync(currentScene);
+        }
+        else
+        {
+            Debug.Log("No Saved Game!");
+        }
 
     }
     public void ExitButton()
@@ -113,7 +160,7 @@ public class MainMenuController : MonoBehaviour
     }
     public void SetVolume(float volume)
     {
-        
+
         float AudioFloat = Mathf.Round(volume * 10f) / 10f;
         //_brightnessLevel = brightnessFloat;
         //brightnessTextValue.text = _brightnessLevel.ToString("0.0");
@@ -123,7 +170,7 @@ public class MainMenuController : MonoBehaviour
     public void VolumeApply()
     {
         Debug.Log(volumeSlider.value);
-       // SetVolume(volumeSlider.value);
+        // SetVolume(volumeSlider.value);
         PlayerPrefs.SetFloat("masterVolume", AudioListener.volume);
         StartCoroutine(ConfirmationBox());
     }
@@ -133,7 +180,7 @@ public class MainMenuController : MonoBehaviour
         {
             PlayerPrefs.SetInt("masterInvertY", 1);
         }
-        else 
+        else
         {
             PlayerPrefs.SetInt("masterInvertY", 0);
         }
@@ -171,14 +218,14 @@ public class MainMenuController : MonoBehaviour
     }
     public void ResetButton(string MenuType)
     {
-        if(MenuType == "Audio")
+        if (MenuType == "Audio")
         {
-            AudioListener.volume = defaultVolume; 
+            AudioListener.volume = defaultVolume;
             volumeSlider.value = defaultVolume;
             volumeTextVolume.text = defaultVolume.ToString("0.0");
-            VolumeApply ();
+            VolumeApply();
         }
-        if(MenuType == "Gameplay")
+        if (MenuType == "Gameplay")
         {
             ControllerSensTextValue.text = defaultSen.ToString("0");
             controllerSensSlider.value = defaultSen;
@@ -186,7 +233,7 @@ public class MainMenuController : MonoBehaviour
             invertYToggle.isOn = false;
             GameplayApply();
         }
-        if(MenuType == "Graphics")
+        if (MenuType == "Graphics")
         {
             brightnessSlider.value = defaultBrightness;
             brightnessTextValue.text = defaultBrightness.ToString("0.0");
@@ -199,9 +246,9 @@ public class MainMenuController : MonoBehaviour
             //resolutionDropdown.value = resolutions.Length;
             GraphicsApply();
         }
-        
+
     }
-     public IEnumerator ConfirmationBox()
+    public IEnumerator ConfirmationBox()
     {
         confirmationPrompt.SetActive(true);
         yield return new WaitForSeconds(2);
@@ -210,6 +257,6 @@ public class MainMenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -28,7 +28,7 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private float Yrotat;
     [SerializeField] private float Xrotat;
     private bool rolling;
-    public bool money;
+    public int money;
     //From ShipAttack Script
     public bool dead;
     private int NormFOV = 60;
@@ -51,6 +51,7 @@ public class PlayerShipMovement : MonoBehaviour
     public bool ableToAttack;
     public bool outside;
     public Vector3 lastInsidePosition;
+    public float TimeFromStation;
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -83,7 +84,6 @@ public class PlayerShipMovement : MonoBehaviour
     //Make things on the top of the cockpit (hula people) to make it feel lived in
     //Change the circle to a radar 
     //Manually make AI instead of using Navmesh 
-    //Fake being erratic, roll a d12, move for x spaces, roll a d8 to pick a direction (up, down, left, right, forward, backward), roll a d12, move for x spaces, repeat
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -133,10 +133,12 @@ public class PlayerShipMovement : MonoBehaviour
     {
         if (!dead && outside)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lastInsidePosition, speed / 20);
+            //transform.position = Vector3.MoveTowards(transform.position, lastInsidePosition, speed / 20);
             Vector3 targetDirection = lastInsidePosition - transform.position;
-            Vector3 newDirection = Vector3.RotateTowards(transform.position, targetDirection, Time.deltaTime, 0.0f);
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, Time.deltaTime, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDirection);
+            //transform.position = Vector3.MoveTowards(transform.position, lastInsidePosition, speed / 20);
+            transform.position = Vector3.MoveTowards(transform.position, PlayerForward.transform.position, speed / 20);
         }
         if (!dead && ableToMove)
         {
@@ -447,6 +449,7 @@ public class PlayerShipMovement : MonoBehaviour
                         TargetedFighter = hit.collider.gameObject;
                         CanvasUIHolder.instance.TargetFighterHealth.text = (TargetedFighter.GetComponent<MasterScript>().Health / 2).ToString();
                         Targeted = true;
+                        GameObject.FindGameObjectWithTag("EnemyCamera").transform.position = new Vector3 (TargetedFighter.transform.position.x, TargetedFighter.transform.position.y + 20, TargetedFighter.transform.position.z);
                     }
                     else
                     {

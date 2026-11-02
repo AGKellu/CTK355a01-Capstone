@@ -5,6 +5,7 @@ public class StationScript : MonoBehaviour
     public GameObject HangarGO;
     public GameObject EndHangarGoPosition;
     public bool inVicinity;
+    public Vector3 spawnPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,6 +25,7 @@ public class StationScript : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Player"))
         {
+            SaveLoad.instance.Save(gameObject.name);
             inVicinity = true;
             PlayerShipMovement.instance.ableToMove = false;
             PlayerShipMovement.instance.speed = 0;
@@ -31,4 +33,6 @@ public class StationScript : MonoBehaviour
             PlayerShipMovement.instance.speedRadialUI.fillAmount = 0;
         }
     }
+    
+
 }
