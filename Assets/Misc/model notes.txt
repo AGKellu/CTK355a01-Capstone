@@ -14,11 +14,29 @@ I added a bottom plat and need to do subtractive melding to cut off the edges th
 
 
 
+Buzzer
+
+Color schemes
+	Cyan + Red (a bit brighter than maroon)
+	Black + Yellow
+	Deep red w/ highlight (probably looks nice but hard to see against space)
+	
+
+
+
+
+
 
 Subtractive meld of the meshes, little circles scattered
 
 
 Click wrench icon, add boolean modifier, operand type object, object is what you want to be the modifier
+
+
+For procedural things, check the shading tab, add a geometry node in the objects modifier, add a bump node which leads into diffuse nodes BSDF and Glossy if applicable, move in mix shader, move into material output
+
+
+
 
 
 

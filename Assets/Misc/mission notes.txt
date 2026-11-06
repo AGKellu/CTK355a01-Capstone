@@ -7,3 +7,7 @@ Minefield clearing
 
 	After a recent raiding party came through, the station has some leftover mines that weren't causing pirate fireworks. The bounty is for the player to fly around the area and clear the mines by shooting them then return to the bar
 	[We can spawn X number of mines within a boundary box and track how many are still alive with an attached script or something similar. Once the player clears them out, redirect them to the space station hanger with a voiceline, a marker, or some other way of direction]
+
+Package to the next station (refine wording, you're too tired)
+
+	As you leave the bar, a man in navy blue stops you and asks for you to take a seat. Once you do, he pulls out a small black box with a keypad on the side. "I need this to be delivered to [STATION NAME]." If you do, I'll wire you some funds once the reciever confirms he has recieved the package.
