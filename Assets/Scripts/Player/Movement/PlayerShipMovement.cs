@@ -18,6 +18,7 @@ public class PlayerShipMovement : MonoBehaviour
     private InputAction FireSmoke;
     private InputAction RespawnAction;
     private InputAction DockAction;
+    private InputAction Throttle;
 
     [Header("Variables")]
     private Vector3 pos;
@@ -127,6 +128,8 @@ public class PlayerShipMovement : MonoBehaviour
         RespawnAction.performed += ctx => Respawn();
         DockAction = InputSystem.actions.FindAction("UI/Dock");
         DockAction.performed += ctx => Dock();
+        Throttle = InputSystem.actions.FindAction("Movement/Throttle");
+        Throttle.performed += ctx => GetSpeed();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
         DeathCamera.LookAt = gameObject.transform;
 
@@ -252,6 +255,8 @@ public class PlayerShipMovement : MonoBehaviour
             }
             else
             {
+                //Debug.Log(SpeedThrottle);
+                //speed = Throttle.ReadValue<float>();
                 if (speedingUp)
                 {
                     if (speed < maxSpeed)
@@ -360,6 +365,16 @@ public class PlayerShipMovement : MonoBehaviour
 
 
     }
+    void GetSpeed()
+    {
+        // speed = Throttle.ReadValue<float>() * -5;
+        float tempSpeed = 0;
+        tempSpeed = ((Throttle.ReadValue<float>()* -1) + 1) / 2;
+        speed = maxSpeed * tempSpeed;
+        
+        Debug.Log(tempSpeed);
+    }
+    
     void StopSpeeding()
     {
         speedingUp = false;
