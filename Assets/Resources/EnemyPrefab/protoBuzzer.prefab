@@ -441,6 +441,10 @@ PrefabInstance:
       value: protoBuzzer
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -551,6 +555,7 @@ MonoBehaviour:
   Engineer: 0
   Bomber: 0
   Camera: {fileID: 0}
+  seeking: 0
 --- !u!4 &2049566060744899402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d8f1fe91d08bde4e9a77a1e234d2c31, type: 3}

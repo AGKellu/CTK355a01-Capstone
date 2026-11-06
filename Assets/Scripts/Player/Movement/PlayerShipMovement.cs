@@ -17,6 +17,7 @@ public class PlayerShipMovement : MonoBehaviour
     private InputAction FireMissile;
     private InputAction FireSmoke;
     private InputAction RespawnAction;
+    private InputAction DockAction;
 
     [Header("Variables")]
     private Vector3 pos;
@@ -80,6 +81,8 @@ public class PlayerShipMovement : MonoBehaviour
     //[SerializeField] public GameObject TargetedFighterStill;
     public static PlayerShipMovement instance;
     [SerializeField] private GameObject PlayerForward;
+    public bool HoldToDock;
+    public bool InDock;
     //Make it so that the player has 3 seconds to get back to the playable space (beacons, big space station, etc) 
     //Make things on the top of the cockpit (hula people) to make it feel lived in
     //Change the circle to a radar 
@@ -122,6 +125,8 @@ public class PlayerShipMovement : MonoBehaviour
         FireSmoke.performed += ctx => SmokeScreen();
         RespawnAction = InputSystem.actions.FindAction("UI/Respawn");
         RespawnAction.performed += ctx => Respawn();
+        DockAction = InputSystem.actions.FindAction("UI/Dock");
+        DockAction.performed += ctx => Dock();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
         DeathCamera.LookAt = gameObject.transform;
 
@@ -253,7 +258,7 @@ public class PlayerShipMovement : MonoBehaviour
                     {
                         //speed += 0.05f;
                         speed += speedStep;
-                        speedRadialUI.fillAmount = (speed / 5);
+                        speedRadialUI.fillAmount = (speed / maxSpeed);
                     }
                 }
                 else if (slowingDown)
@@ -262,7 +267,7 @@ public class PlayerShipMovement : MonoBehaviour
                     {
                         //speed -= 0.05f;
                         speed -= speedStep;
-                        speedRadialUI.fillAmount = (speed / 5);
+                        speedRadialUI.fillAmount = (speed / maxSpeed) ;
                         if (speed < 0)
                         {
                             speed = 0;
@@ -294,7 +299,9 @@ public class PlayerShipMovement : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, PlayerForward.transform.position, speed / 20);
             }
         }
+       
     }
+
     void AddSpeed()
     {
         //if incremental is true, set the following code in an if method
@@ -446,10 +453,11 @@ public class PlayerShipMovement : MonoBehaviour
                 {
                     if (hit.collider.gameObject != TargetedFighter) // Might have hotswapping targets or targetting nothing if hitting void
                     {
+                        //TargetedFighter.GetComponent<MasterScript>().Camera = GameObject.FindGameObjectWithTag("EnemyCamera");
                         TargetedFighter = hit.collider.gameObject;
                         CanvasUIHolder.instance.TargetFighterHealth.text = (TargetedFighter.GetComponent<MasterScript>().Health / 2).ToString();
                         Targeted = true;
-                        GameObject.FindGameObjectWithTag("EnemyCamera").transform.position = new Vector3 (TargetedFighter.transform.position.x, TargetedFighter.transform.position.y + 20, TargetedFighter.transform.position.z);
+                        GameObject.FindGameObjectWithTag("EnemyCamera").transform.position = new Vector3 (TargetedFighter.transform.position.x, TargetedFighter.transform.position.y + 5, TargetedFighter.transform.position.z);
                     }
                     else
                     {
@@ -520,6 +528,7 @@ public class PlayerShipMovement : MonoBehaviour
     {
         if (dead)
         {
+
             GameObject PlayerCruiser = GameObject.Find("PlayerCruiser");
             transform.position = PlayerCruiser.GetComponent<CruiserScript>().PlayerSpawnPoint.transform.position;
             Health = 5;
@@ -540,6 +549,14 @@ public class PlayerShipMovement : MonoBehaviour
 
         }
 
+    }
+    void Dock()
+    {
+        if (InDock && !dead)
+        {
+            //Debug.Log("Held for " + DockAction.startTime + " seconds. Dock.");
+            Debug.Log("Dock");
+        }
     }
     void OnCollisionEnter(Collision coll)
     {
