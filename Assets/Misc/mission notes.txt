@@ -1,0 +1,9 @@
+Tri-Tech weapon testing
+
+	Tri-Tech is a ship manufacturer that focuses on cutting edge shielding and weaponry, mostly lasers. A local representative wants you to fight three of their ships to test the effectiveness of a new shield.
+	[The ships will likely be a modified buzzer with slightly more health and a different color scheme or slightly different decorations which will likely be more rounded to fit the futuristic vibe better. The bounty will hopefully have a contract attached with lots of lawyer speak that boils down to "It's cheaper to have you fight it and if you die you can't sue us."]
+
+Minefield clearing
+
+	After a recent raiding party came through, the station has some leftover mines that weren't causing pirate fireworks. The bounty is for the player to fly around the area and clear the mines by shooting them then return to the bar
+	[We can spawn X number of mines within a boundary box and track how many are still alive with an attached script or something similar. Once the player clears them out, redirect them to the space station hanger with a voiceline, a marker, or some other way of direction]
