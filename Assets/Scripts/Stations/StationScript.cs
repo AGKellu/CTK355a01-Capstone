@@ -25,12 +25,20 @@ public class StationScript : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Player"))
         {
+            if (PlayerShipMovement.instance.HoldToDock)
+            {
+                PlayerShipMovement.instance.InDock = true;
+            }
+            else
+            {
+                
             SaveLoad.instance.Save(gameObject.name);
             inVicinity = true;
             PlayerShipMovement.instance.ableToMove = false;
             PlayerShipMovement.instance.speed = 0;
             PlayerShipMovement.instance.ableToAttack = false;
             PlayerShipMovement.instance.speedRadialUI.fillAmount = 0;
+            }
         }
     }
     

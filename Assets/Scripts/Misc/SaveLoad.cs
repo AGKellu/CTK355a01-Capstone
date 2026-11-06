@@ -4,6 +4,10 @@ using System.IO;
 public class SaveLoad : MonoBehaviour
 {
     public string lastStationName;
+    public float maxSpeed;
+    public int money;
+    public int MaxMissiles;
+    public int Health;
     public static SaveLoad instance;
     void Awake()
     {
@@ -30,14 +34,18 @@ public class SaveLoad : MonoBehaviour
     }
     public void Save(string StationName)
     {
+        MaxMissiles = PlayerShipMovement.instance.MaxMissiles;
+        maxSpeed = PlayerShipMovement.instance.maxSpeed;
+        money = PlayerShipMovement.instance.money;
+        Health = PlayerShipMovement.instance.Health;
         lastStationName = StationName;
         SaveObject saveObject = new SaveObject
         {
             lastStationName = lastStationName,
-            savedMaxMissiles = PlayerShipMovement.instance.MaxMissiles,
-            savedMaxSpeed = PlayerShipMovement.instance.maxSpeed,
-            savedMoney = PlayerShipMovement.instance.money,
-            savedHealth = PlayerShipMovement.instance.Health  
+            savedMaxMissiles = MaxMissiles,
+            savedMaxSpeed = maxSpeed,
+            savedMoney = money,
+            savedHealth = Health  
 
         };
         string json = JsonUtility.ToJson(saveObject);

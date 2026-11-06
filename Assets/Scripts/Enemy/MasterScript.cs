@@ -19,6 +19,7 @@ public class MasterScript : MonoBehaviour
     public GameObject EnemyForward;
     public bool Buzzer, Engineer, Bomber;
     public GameObject Camera;
+    public bool seeking;
     //private GameObject Player;
     //private PlayerShipMovement PlayerShipMovement;
     // public GameObject Spinner;
@@ -31,58 +32,72 @@ public class MasterScript : MonoBehaviour
     void Update()
     {
         //Below code is commented to stop movement for testing
-        //Camera.transform.position = Vector3.MoveTowards(Camera.transform.position, transform.position) 
+        //Camera.transform.position = Vector3.MoveTowards(Camera.transform.position, transform.position, Time.deltaTime * 20); 
         if (Buzzer)
         {
             //if the distance to the player is less than minimumDistance, rotate towards player, shoot, run away, which means do above while reloading  
-           
-            //Fake being erratic, roll a d6 to pick a direction (up, down, left, right, forward, backward), roll a d4, move that many seconds forward, repeat
-           /* transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+            //Fake being erratic, roll a d6 to pick a direction (up, down, left, right, forward, backward)
+            //roll between 50 and 100, shoot a raycast for that
+            //add distance to transform.forward position to check the end of the ray 
+            // move that many spaces forward, repeat
+            //if raycast hits something, subtract from that, movetowards 
 
-            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
-            transform.rotation = Quaternion.LookRotation(newRotate);
-            if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
+
+            /* transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+
+             Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
+             transform.rotation = Quaternion.LookRotation(newRotate);
+             if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
+             {
+                 if (!onCoolDown)
+                 {
+                     if (!PlayerShipMovement.instance.dead) // If player is alive
+                     {
+
+                       //  Shoot();
+                     }
+                 }
+             }*/
+            //transform.Rotate(0, 0, Time.deltaTime, Space.Self);
+            if (!seeking)
             {
-                if (!onCoolDown)
-                {
-                    if (!PlayerShipMovement.instance.dead) // If player is alive
-                    {
+                Seek();
+            }
 
-                      //  Shoot();
+            if (PlayerShipMovement.instance != null)
+            {
+                if (PlayerShipMovement.instance.TargetedFighter == gameObject)
+                {
+                    if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
+                    {
+                        CanvasUIHolder.instance.TargetFighterStill.SetActive(true);
+                    }
+                    Camera.SetActive(true);
+                    //Camera.transform.position = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
+                    //CanvasUIHolder.instance.TargetFighterStill.GetComponent<RawImage>().texture = TargetFighterStillTexture;
+                    //CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
+                    float dist = Mathf.Round(Vector3.Distance(PlayerShipMovement.instance.gameObject.transform.position, transform.position)) * 10f / 10f;
+
+                    CanvasUIHolder.instance.TargetFighterDistance.text = dist.ToString("0.0");
+
+                    if (!TargetedOverlay.activeSelf)
+                    {
+                        TargetedOverlay.SetActive(true);
                     }
                 }
-            }*/
-            //transform.Rotate(0, 0, Time.deltaTime, Space.Self);
-        
-            if (PlayerShipMovement.instance.TargetedFighter == gameObject)
-            {
-                if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
+                else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
                 {
-                    CanvasUIHolder.instance.TargetFighterStill.SetActive(true);
+                    if (TargetedOverlay.activeSelf)
+                    {
+                        TargetedOverlay.SetActive(false);
+                    }
                 }
-                Camera.SetActive(true);
-                //CanvasUIHolder.instance.TargetFighterStill.GetComponent<RawImage>().texture = TargetFighterStillTexture;
-                //CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
-                float dist = Mathf.Round(Vector3.Distance(PlayerShipMovement.instance.gameObject.transform.position, transform.position)) * 10f / 10f;
+            }
 
-                CanvasUIHolder.instance.TargetFighterDistance.text = dist.ToString("0.0");
-                
-                if (!TargetedOverlay.activeSelf)
-                {
-                    TargetedOverlay.SetActive(true);
-                }
-            }
-            else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
-            {
-                if (TargetedOverlay.activeSelf)
-                {
-                    TargetedOverlay.SetActive(false);
-                }
-            }
         }
         //if (Engineer)
         //{
-            
+
         //}
 
     }
@@ -93,9 +108,9 @@ public class MasterScript : MonoBehaviour
         //Debug.Log(Health);
         if (PlayerShipMovement.instance.TargetedFighter == gameObject)
         {
-            CanvasUIHolder.instance.TargetFighterHealth.text = (Health/2).ToString();
+            CanvasUIHolder.instance.TargetFighterHealth.text = (Health / 2).ToString();
             //Debug.Log(Health);
-            
+
         }
         if (Health <= 0)
         {
@@ -118,6 +133,51 @@ public class MasterScript : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(Seconds); // Wait for a number of seconds set in Engine
         onCoolDown = false; // Resets cooldown and allow enemy to fire again
+    }
+    void Seek()
+    {
+        seeking = true;
+        int Rotation = Random.Range(0, 5);
+        switch (Rotation)
+        {
+            case 0:
+                //dont rotate
+                break;
+            case 1:
+                //move up
+                transform.Rotate(new Vector3(-90, 0, 0), Space.World);
+                break;
+            case 2:
+                //move down
+                transform.Rotate(new Vector3(90, 0, 0), Space.World);
+                break;
+            case 3:
+                //move left
+                transform.Rotate(new Vector3(0, -90, 0), Space.World);
+                break;
+            case 4:
+                //move right
+                transform.Rotate(new Vector3(0, 90, 0), Space.World);
+                break;
+            case 5:
+                //move backward
+                transform.Rotate(new Vector3(0, 180, 0), Space.World);
+                break;
+        }
+        RaycastHit hit;
+        Ray myRay = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
+        float maxDist = Random.Range(0, 190);
+        if (Physics.Raycast(myRay, out hit, maxDist))
+        {
+            Debug.Log(hit.collider.gameObject.name);
+
+        }
+        else
+        {
+            Vector3 newPos = myRay.origin + myRay.direction;
+            Debug.Log(newPos);
+            //transform.position= Vector3.MoveTowards(transform.position, )
+        }
     }
     public void DeTarget() // Handles sprite deletion and resetting targeting
     {
