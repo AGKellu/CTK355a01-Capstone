@@ -20,6 +20,8 @@ public class MasterScript : MonoBehaviour
     public bool Buzzer, Engineer, Bomber;
     public GameObject Camera;
     public bool seeking;
+    [SerializeField] private Vector3 newPos;
+    [SerializeField] private AudioClip[] clips;
     //private GameObject Player;
     //private PlayerShipMovement PlayerShipMovement;
     // public GameObject Spinner;
@@ -58,14 +60,78 @@ public class MasterScript : MonoBehaviour
                      }
                  }
              }*/
-            //transform.Rotate(0, 0, Time.deltaTime, Space.Self);
-            if (!seeking)
-            {
-                Seek();
-            }
+
+            /* if (!seeking)
+             {
+                 Seek();
+             }
+
+             */
+
 
             if (PlayerShipMovement.instance != null)
             {
+                if (Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position) < TriggerDistance)
+                {
+                    if (!onCoolDown)
+                    {
+                        if (!PlayerShipMovement.instance.dead) // If player is alive
+                        {
+                            transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+
+                            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
+                            transform.rotation = Quaternion.LookRotation(newRotate);
+                            Shoot();
+                        }
+
+                    }
+                    else
+                    {
+                        /* transform.position = Vector3.MoveTowards(transform.position, newPos, speed * 2);
+                         if (!seeking)
+                         {
+                             Seek();
+                         }
+                         if (Vector3.Distance(transform.position, newPos) < 0.01)
+                         {
+                             seeking = true;
+                             //Debug.Log("moved to new seeking position\n" + newPos);
+                             seeking = false;
+                         }*/
+                        transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+                        Debug.Log(gameObject.name);
+                        //Moves towards player
+                        //once it gets close to player, stop rotating, 
+                        //once it gets far away from player, but not too far, rotate, repeat;
+                        if (Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position) < TriggerDistance / 2)
+                        {
+
+                        }
+                        else
+                        {
+                            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f);
+                        transform.rotation = Quaternion.LookRotation(newRotate);
+                        }
+                        
+                    }
+                }
+                else
+                {
+
+                    transform.position = Vector3.MoveTowards(transform.position, newPos, speed * 2);
+                    if (!seeking)
+                    {
+
+                        Seek();
+                    }
+                    if (Vector3.Distance(transform.position, newPos) < 0.01)
+                    {
+                        seeking = true;
+                        //Debug.Log("moved to new seeking position\n" + newPos);
+                        seeking = false;
+                    }
+                }
+
                 if (PlayerShipMovement.instance.TargetedFighter == gameObject)
                 {
                     if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
@@ -118,6 +184,9 @@ public class MasterScript : MonoBehaviour
             {
                 DeTarget(); // Destroy enemy sprites and reset targeting
             }
+            int ClipInt = Random.Range(0, 4);
+            gameObject.GetComponent<AudioSource>().clip = (clips[ClipInt]);
+            gameObject.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
         }
     }
@@ -136,7 +205,6 @@ public class MasterScript : MonoBehaviour
     }
     void Seek()
     {
-        seeking = true;
         int Rotation = Random.Range(0, 5);
         switch (Rotation)
         {
@@ -165,19 +233,33 @@ public class MasterScript : MonoBehaviour
                 break;
         }
         RaycastHit hit;
+
         Ray myRay = new Ray(transform.position, transform.TransformDirection(Vector3.forward));
-        float maxDist = Random.Range(0, 190);
+        float maxDist = 10;
+        //float maxDist = Random.Range(50, 190);
+        //Debug.Log(maxDist);
         if (Physics.Raycast(myRay, out hit, maxDist))
         {
-            Debug.Log(hit.collider.gameObject.name);
-
+            //Debug.Log(hit.collider.gameObject.name);
+            //Debug.Log(hit.distance);
+            int randomMove = Random.Range(0, 10);
+            //Debug.Log(randomMove- Mathf.Round(hit.distance/maxDist));
+            newPos = myRay.GetPoint(randomMove - Mathf.Round(hit.distance / maxDist));
         }
         else
         {
-            Vector3 newPos = myRay.origin + myRay.direction;
-            Debug.Log(newPos);
+            //newPos = myRay.origin + myRay.direction;
+            int randomMove = Random.Range(0, 10);
+            //Debug.Log(randomMove);
+            //Debug.Log(myRay.GetPoint(randomMove));
+            newPos = myRay.GetPoint(randomMove);
+            //transform.position = Vector3.MoveTowards(transform.position, newPos, speed * 2);
+
+            //Debug.Log(newPos);
             //transform.position= Vector3.MoveTowards(transform.position, )
         }
+
+        seeking = true;
     }
     public void DeTarget() // Handles sprite deletion and resetting targeting
     {

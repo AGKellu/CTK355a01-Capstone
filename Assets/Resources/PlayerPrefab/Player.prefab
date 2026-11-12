@@ -3130,6 +3130,8 @@ MonoBehaviour:
   Target60Seconds: 0
   MissileTargetRadialUI: {fileID: 6322479761080962953}
   PlayerForward: {fileID: 1786537774097266132}
+  HoldToDock: 0
+  InDock: 0
 --- !u!54 &8128554952335711363
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3297,7 +3299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Ilumisoft.RadarSystem::Ilumisoft.RadarSystem.Radar
   iconContainer: {fileID: 2426727699574187147}
-  range: 20
+  range: 20000
   applyRotation: 1
   Player: {fileID: 6226323376592142809}
 --- !u!1 &6333815750200098678

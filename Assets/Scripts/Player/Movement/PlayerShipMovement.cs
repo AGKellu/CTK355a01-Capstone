@@ -371,8 +371,10 @@ public class PlayerShipMovement : MonoBehaviour
         float tempSpeed = 0;
         tempSpeed = ((Throttle.ReadValue<float>()* -1) + 1) / 2;
         speed = maxSpeed * tempSpeed;
-        
-        Debug.Log(tempSpeed);
+
+        speedRadialUI.fillAmount = (speed / maxSpeed);
+
+        //Debug.Log(tempSpeed);
     }
     
     void StopSpeeding()

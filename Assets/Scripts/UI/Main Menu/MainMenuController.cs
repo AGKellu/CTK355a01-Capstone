@@ -109,7 +109,7 @@ public class MainMenuController : MonoBehaviour
         GameObject[] Stations = GameObject.FindGameObjectsWithTag("Station");
         for (int i = 0; i < Stations.Length; i++)
         {
-            Debug.Log(Vector3.Distance(Stations[i].transform.position, PlayerShip.transform.position));
+            //Debug.Log(Vector3.Distance(Stations[i].transform.position, PlayerShip.transform.position));
         }
         //GameObject EnemyCruiser = GameObject.Find("EnemyCruiser");
         //PlayerCruiser.GetComponent<CruiserScript>().SpawnPlayer(AudioListener.volume, mainControllerSens);
