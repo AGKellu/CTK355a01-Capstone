@@ -1,3 +1,12 @@
+Key:
+|REWRITE|
+[DESIGNER NOTES]
+'quote or emphasis within dialogue'
+
+
+
+
+
 Tri-Tech weapon testing
 
 	Tri-Tech is a ship manufacturer that focuses on cutting edge shielding and weaponry, mostly lasers. A local representative wants you to fight three of their ships to test the effectiveness of a new shield.
@@ -5,9 +14,44 @@ Tri-Tech weapon testing
 
 Minefield clearing
 
+	On opening
+
+	"If you have the time, I need something. I set out some mines around the station a few weeks ago when a pirate gang was on its way. Well now that they're gone, I need the mines to be gone too. Don't worry about defusing them, they're not worth the trouble. Just shoot them until they pop, shouldn't take long. I'll even throw in some extra credits for the trouble."
+
+	Interior description (for our eyes only)
+
 	After a recent raiding party came through, the station has some leftover mines that weren't causing pirate fireworks. The bounty is for the player to fly around the area and clear the mines by shooting them then return to the bar
 	[We can spawn X number of mines within a boundary box and track how many are still alive with an attached script or something similar. Once the player clears them out, redirect them to the space station hanger with a voiceline, a marker, or some other way of direction]
 
+	On Completion
+
+	"That's all of 'em, good work. I'll transfer the credits to you now. Actually...if you're needing more work, I know a guy with a pirate problem further down the system. They're not gonna sit there and let you blow em up but he'll give you a real payday if you can crunch em. I'll send you the details now.
+
+	[This is intended to be a tutorial mission that introduces flying, shooting, death, etc. but also missions locking other missions. A box could pop up stating "Some missions aren't readily available on the bounty board. Sometimes people need a recommendation from a friend before they're willing to offer you work."]
+
+
+Pirate Problem
+
+	On opening
+
+	"So you're the pilot Zee mentioned, I'm Barry. As you've likely heard I have an issue with some pilots who think the things I trade should really belong to them. The last time they came here for 'donations' I slipped a crate with a tracker on it into the pile so you'll know exactly where they are. Travel to their ship, blow them up in any way you see fit, and rid me of this colossal headache while getting some nice spending money for it.
+
+	On completion
+
+	"You have no idea how relieved you've made me. This sector is a hotspot for pirate activity so I'll probably have to deal with more soon but I'll deal with that when it comes.| Actually...maybe you could, if you're willing of course. I'll post on the board if they ever cause me trouble again.|
+
+|REWRITE|
+
+
 Package to the next station (refine wording, you're too tired)
 
-	As you leave the bar, a man in navy blue stops you and asks for you to take a seat. Once you do, he pulls out a small black box with a keypad on the side. "I need this to be delivered to [STATION NAME]." If you do, I'll wire you some funds once the reciever confirms he has recieved the package.
+	As you leave the bar, a man in navy blue stops you and asks for you to take a seat. Once you do, he pulls out a small black box with a credchip on top. "I need this to be delivered to [STATION NAME]. If you do, I'll send you the code to unlock the chip, deal?"
+
+
+	In Progress
+
+	We could have pirates ambush the player along the route to the station. The player could choose to give up their valuables including the box, hide the box and send over the credchip (50/50 chance or something, we could do stats to influence it later in development), or fight the pirates.
+
+	On Completion
+
+	Bottom right box with some blacked out silhouette and a message. "I've been told it's been done, the code is ####." This would then update the players currency wherever displayed.
