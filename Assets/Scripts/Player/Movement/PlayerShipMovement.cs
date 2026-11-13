@@ -53,7 +53,7 @@ public class PlayerShipMovement : MonoBehaviour
     public bool ableToAttack;
     public bool outside;
     public Vector3 lastInsidePosition;
-    public float TimeFromStation;
+    
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -95,6 +95,11 @@ public class PlayerShipMovement : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
     void Start()
@@ -148,6 +153,7 @@ public class PlayerShipMovement : MonoBehaviour
             //transform.position = Vector3.MoveTowards(transform.position, lastInsidePosition, speed / 20);
             transform.position = Vector3.MoveTowards(transform.position, PlayerForward.transform.position, speed / 20);
         }
+        
         if (!dead && ableToMove)
         {
             //if (Targeted)
@@ -155,6 +161,9 @@ public class PlayerShipMovement : MonoBehaviour
             //if (TargetedFighter.name.Contains("Buzzer"))
             //{
             //}
+            //60 is 1 second
+            //600 is 10 seconds
+            
             if (TargetedFighter != null && !MissileLoaded && (MissileCount < MaxMissiles))
             {
                 if (TargetedSeconds < 3)
@@ -543,6 +552,11 @@ public class PlayerShipMovement : MonoBehaviour
     }
     public void Respawn()
     {
+
+        SaveLoad.instance.Load();
+    }
+    /*public void Respawn()
+    {
         if (dead)
         {
 
@@ -566,7 +580,7 @@ public class PlayerShipMovement : MonoBehaviour
 
         }
 
-    }
+    }*/
     void Dock()
     {
         if (InDock && !dead)

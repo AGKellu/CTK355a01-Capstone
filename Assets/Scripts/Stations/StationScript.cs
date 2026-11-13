@@ -31,16 +31,21 @@ public class StationScript : MonoBehaviour
             }
             else
             {
-                
-            SaveLoad.instance.Save(gameObject.name);
-            inVicinity = true;
-            PlayerShipMovement.instance.ableToMove = false;
-            PlayerShipMovement.instance.speed = 0;
-            PlayerShipMovement.instance.ableToAttack = false;
-            PlayerShipMovement.instance.speedRadialUI.fillAmount = 0;
+
+                SaveLoad.instance.Save(gameObject.name);
+                inVicinity = true;
+                PlayerShipMovement.instance.ableToMove = false;
+                PlayerShipMovement.instance.speed = 0;
+                PlayerShipMovement.instance.ableToAttack = false;
+                PlayerShipMovement.instance.speedRadialUI.fillAmount = 0;
+                OpenWorldManager OWManager = SaveLoad.instance.gameObject.GetComponent<OpenWorldManager>();
+                OWManager.GoToStation(gameObject.name);
+                // OWManager = GameObject.Find("OpenWorldManager");
+                //OWManager.GetComponent<OpenWorldManager>().GoToStation();
             }
         }
     }
+    //when player loads from "inside" station, PlayerShipMovement.instance.TimeFromStation = 0
     
 
 }

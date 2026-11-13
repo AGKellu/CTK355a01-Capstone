@@ -59,11 +59,11 @@ public class CruiserScript : MonoBehaviour
             Debug.Log(Vector3.Distance(Stations[i].transform.position, PlayerShip.transform.position));
         }
     }
-    public void RespawnPlayer()
+    /*public void RespawnPlayer()
     {
         //GameObject PlayerShip = Instantiate(PlayerFighter, PlayerSpawnPoint.transform.position, Quaternion.identity);
         PlayerShipMovement.instance.gameObject.transform.position = PlayerSpawnPoint.transform.position;
         PlayerShipMovement.instance.gameObject.transform.rotation = Quaternion.identity;
         PlayerShipMovement.instance.Respawn();//        PlayerShip.GetComponent<PlayerShipMovement>().Respawn();
-    }
+    }*/
 }

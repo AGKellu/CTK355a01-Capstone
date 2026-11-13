@@ -22,6 +22,7 @@ public class MasterScript : MonoBehaviour
     public bool seeking;
     [SerializeField] private Vector3 newPos;
     [SerializeField] private AudioClip[] clips;
+    //create a game manager that instantiates enemy fighters
     //private GameObject Player;
     //private PlayerShipMovement PlayerShipMovement;
     // public GameObject Spinner;

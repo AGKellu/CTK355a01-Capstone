@@ -3113,7 +3113,6 @@ MonoBehaviour:
   ableToAttack: 1
   outside: 0
   lastInsidePosition: {x: 0, y: 0, z: 0}
-  TimeFromStation: 0
   VirtualCamera: {fileID: 3653902530519673916}
   ZoomCamera: {fileID: 3714227370929149234}
   DeathCamera: {fileID: 4191270792750924050}
@@ -4231,7 +4230,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8117651858680130126}
   - component: {fileID: 9069138824334629697}
-  - component: {fileID: 1642410983674471899}
   - component: {fileID: 7219831951736258684}
   m_Layer: 0
   m_Name: Main Camera
@@ -4306,14 +4304,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1642410983674471899
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8599488777885528135}
-  m_Enabled: 1
 --- !u!114 &7219831951736258684
 MonoBehaviour:
   m_ObjectHideFlags: 0
