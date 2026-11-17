@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a557ebe648c7370448c234132c79dc3c, type: 3}
+  m_Name: MineClearQuest
+  m_EditorClassIdentifier: Assembly-CSharp::Quest
+  questID: M8998cd08-c773-4ab1-82e5-4379b647c394
+  questName: Mine Clear
+  questDescription: Clear 15 Mines At This Location
+  objectives:
+  - objectiveID: 2
+    description: Destroy 15 Mines.
+    type: 2
+    requiredAmount: 15
+    currentAmount: 0
+  questPosition: {x: 0, y: 0, z: 0}

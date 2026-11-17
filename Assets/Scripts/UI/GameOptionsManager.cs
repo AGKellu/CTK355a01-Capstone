@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class Objective : MonoBehaviour
+public class GameOptionsManager : MonoBehaviour
 {
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

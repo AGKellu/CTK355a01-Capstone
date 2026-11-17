@@ -25,13 +25,14 @@ public class StationScript : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Player"))
         {
-            if (PlayerShipMovement.instance.HoldToDock)
-            {
-                PlayerShipMovement.instance.InDock = true;
-            }
-            else
-            {
-
+            //if (PlayerShipMovement.instance.HoldToDock)
+            //{
+            //PlayerShipMovement.instance.InDock = true;
+            //}
+            //else
+            //{
+            PlayerShipMovement.instance.InDock = true;
+            //
                 SaveLoad.instance.Save(gameObject.name);
                 inVicinity = true;
                 PlayerShipMovement.instance.ableToMove = false;
@@ -42,7 +43,7 @@ public class StationScript : MonoBehaviour
                 OWManager.GoToStation(gameObject.name);
                 // OWManager = GameObject.Find("OpenWorldManager");
                 //OWManager.GetComponent<OpenWorldManager>().GoToStation();
-            }
+    //        }
         }
     }
     //when player loads from "inside" station, PlayerShipMovement.instance.TimeFromStation = 0

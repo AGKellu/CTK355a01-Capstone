@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a557ebe648c7370448c234132c79dc3c, type: 3}
+  m_Name: TalkNPCQuest
+  m_EditorClassIdentifier: Assembly-CSharp::Quest
+  questID: 7a11ec09-26a6-45ea-b39f-f7028e2cf927
+  questName: Talk To NPC
+  questDescription: See NPC1 At Station 3.
+  objectives:
+  - objectiveID: 3
+    description: NPC1 May Have Some Important Information For You.
+    type: 1
+    requiredAmount: 1
+    currentAmount: 0
+  questPosition: {x: 0, y: 0, z: 0}

@@ -3298,7 +3298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Ilumisoft.RadarSystem::Ilumisoft.RadarSystem.Radar
   iconContainer: {fileID: 2426727699574187147}
-  range: 20000
+  range: 200
   applyRotation: 1
   Player: {fileID: 6226323376592142809}
 --- !u!1 &6333815750200098678

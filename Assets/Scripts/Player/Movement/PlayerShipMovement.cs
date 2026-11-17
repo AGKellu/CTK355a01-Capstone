@@ -19,6 +19,7 @@ public class PlayerShipMovement : MonoBehaviour
     private InputAction RespawnAction;
     private InputAction DockAction;
     private InputAction Throttle;
+    private InputAction OpenOptionsMenu;
 
     [Header("Variables")]
     private Vector3 pos;
@@ -53,7 +54,7 @@ public class PlayerShipMovement : MonoBehaviour
     public bool ableToAttack;
     public bool outside;
     public Vector3 lastInsidePosition;
-    
+
 
     [Header("Player Components")]
     private Rigidbody playerRB;
@@ -76,9 +77,12 @@ public class PlayerShipMovement : MonoBehaviour
     [SerializeField] private GameObject PlayerMissile;
     public Image speedRadialUI;
     public GameObject TargetedFighter;
-    [SerializeField] private float TargetedSeconds;
-    [SerializeField] private int Target60Seconds;
-    [SerializeField] private Image MissileTargetRadialUI;
+    //[SerializeField] private float TargetedSeconds;
+    public float TargetedSeconds;
+    //[SerializeField] private int Target60Seconds;
+    public int Target60Seconds;
+    //[SerializeField] private Image MissileTargetRadialUI;
+    public Image MissileTargetRadialUI;
     //[SerializeField] public GameObject TargetedFighterStill;
     public static PlayerShipMovement instance;
     [SerializeField] private GameObject PlayerForward;
@@ -137,6 +141,8 @@ public class PlayerShipMovement : MonoBehaviour
         Throttle.performed += ctx => GetSpeed();
         DeathCamera.GetComponent<DeathCameraScript>().Player = gameObject;
         DeathCamera.LookAt = gameObject.transform;
+        OpenOptionsMenu = InputSystem.actions.FindAction("UI/OpenOptions");
+        OpenOptionsMenu.performed += ctx => OpenOptions();
 
 
     }
@@ -153,7 +159,7 @@ public class PlayerShipMovement : MonoBehaviour
             //transform.position = Vector3.MoveTowards(transform.position, lastInsidePosition, speed / 20);
             transform.position = Vector3.MoveTowards(transform.position, PlayerForward.transform.position, speed / 20);
         }
-        
+
         if (!dead && ableToMove)
         {
             //if (Targeted)
@@ -163,7 +169,7 @@ public class PlayerShipMovement : MonoBehaviour
             //}
             //60 is 1 second
             //600 is 10 seconds
-            
+
             if (TargetedFighter != null && !MissileLoaded && (MissileCount < MaxMissiles))
             {
                 if (TargetedSeconds < 3)
@@ -281,7 +287,7 @@ public class PlayerShipMovement : MonoBehaviour
                     {
                         //speed -= 0.05f;
                         speed -= speedStep;
-                        speedRadialUI.fillAmount = (speed / maxSpeed) ;
+                        speedRadialUI.fillAmount = (speed / maxSpeed);
                         if (speed < 0)
                         {
                             speed = 0;
@@ -313,7 +319,7 @@ public class PlayerShipMovement : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, PlayerForward.transform.position, speed / 20);
             }
         }
-       
+
     }
 
     void AddSpeed()
@@ -378,14 +384,14 @@ public class PlayerShipMovement : MonoBehaviour
     {
         // speed = Throttle.ReadValue<float>() * -5;
         float tempSpeed = 0;
-        tempSpeed = ((Throttle.ReadValue<float>()* -1) + 1) / 2;
+        tempSpeed = ((Throttle.ReadValue<float>() * -1) + 1) / 2;
         speed = maxSpeed * tempSpeed;
 
         speedRadialUI.fillAmount = (speed / maxSpeed);
 
         //Debug.Log(tempSpeed);
     }
-    
+
     void StopSpeeding()
     {
         speedingUp = false;
@@ -442,12 +448,45 @@ public class PlayerShipMovement : MonoBehaviour
                     MissileTargetRadialUI.fillAmount = 0;
                     MissileLoaded = false;
                     MissileCount++;
+                    if (TargetedFighter != null)
+                    {
+                    TargetedFighter.GetComponent<MasterScript>().DeTarget();
+                   
+                    }
                     TargetedFighter.GetComponent<MasterScript>().DeTarget();
                 }
 
             }
         }
 
+    }
+    void OpenOptions()
+    {
+        if (!InDock)
+        {
+            //GameObject OptionsCanvas = GameObject.Find("GameOptionsCanvas");
+            if (OpenWorldManager.instance.OptionsCanvas.activeSelf)
+            {
+
+                ableToMove = true;
+                ableToAttack = true;
+                OpenWorldManager.instance.OptionsCanvas.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+
+
+                ableToMove = false;
+                ableToAttack = false;
+                OpenWorldManager.instance.OptionsCanvas.SetActive(true);
+                OpenWorldManager.instance.ShowCurrentQuests();
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+        }
+
+        //OptionsCanvas 
+        //Stop every movement of enemies and space stations;
     }
     void SmokeScreen()
     {
@@ -483,7 +522,7 @@ public class PlayerShipMovement : MonoBehaviour
                         TargetedFighter = hit.collider.gameObject;
                         CanvasUIHolder.instance.TargetFighterHealth.text = (TargetedFighter.GetComponent<MasterScript>().Health / 2).ToString();
                         Targeted = true;
-                        GameObject.FindGameObjectWithTag("EnemyCamera").transform.position = new Vector3 (TargetedFighter.transform.position.x, TargetedFighter.transform.position.y + 5, TargetedFighter.transform.position.z);
+                        //GameObject.FindGameObjectWithTag("EnemyCamera").transform.position = new Vector3(TargetedFighter.transform.position.x, TargetedFighter.transform.position.y + 5, TargetedFighter.transform.position.z);
                     }
                     else
                     {

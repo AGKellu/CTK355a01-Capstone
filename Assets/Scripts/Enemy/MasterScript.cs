@@ -22,6 +22,7 @@ public class MasterScript : MonoBehaviour
     public bool seeking;
     [SerializeField] private Vector3 newPos;
     [SerializeField] private AudioClip[] clips;
+    public string ID;
     //create a game manager that instantiates enemy fighters
     //private GameObject Player;
     //private PlayerShipMovement PlayerShipMovement;
@@ -181,6 +182,8 @@ public class MasterScript : MonoBehaviour
         }
         if (Health <= 0)
         {
+            OpenWorldManager.instance.QuestObjectiveChecker(ID);
+            //Debug.Log(OpenWorldManager.instance.activateQuests[0].quest.objectives.objectiveID);
             if (PlayerShipMovement.instance.TargetedFighter == gameObject) // Go to PlayerShipMovement.cs and check if TargetedFighter is an object
             {
                 DeTarget(); // Destroy enemy sprites and reset targeting
@@ -273,6 +276,9 @@ public class MasterScript : MonoBehaviour
         Camera.SetActive(false);
         CanvasUIHolder.instance.TargetFighterHealth.text = null;
         CanvasUIHolder.instance.TargetFighterDistance.text = null;
+        PlayerShipMovement.instance.MissileTargetRadialUI.fillAmount = 0;
+        PlayerShipMovement.instance.Target60Seconds = 0;
+        PlayerShipMovement.instance.TargetedSeconds = 0;
         PlayerShipMovement.instance.TargetedFighter = null;
         PlayerShipMovement.instance.Targeted = false;
 
