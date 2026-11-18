@@ -7,7 +7,7 @@ public class Quest : ScriptableObject
     public string questID;
     public string questName;
     public string questDescription;
-    public List<QuestObjective> objectives;
+    public List<QuestObjective> objectives = new List<QuestObjective>();
     public Vector3 questPosition;
 
     private void OnValidate()
@@ -22,6 +22,7 @@ public class Quest : ScriptableObject
 public class QuestObjective
 {
     public string objectiveID;
+    public string objectiveNPCName;
     public string description;
     public ObjectiveType type;
     public int requiredAmount;

@@ -7468,6 +7468,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 32253223}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &439435026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8074,7 +8086,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 868734301}
   m_HandleRect: {fileID: 868734300}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -17666,6 +17678,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 32253223}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1124076755
 MonoBehaviour:
@@ -31994,6 +32018,7 @@ MonoBehaviour:
   questListContent: {fileID: 932489001}
   questEntryPrefab: {fileID: 1014040711137092004, guid: f688fd3b4c46f3545b91975ff43a8c8d, type: 3}
   activateQuests: []
+  Asteroid: {fileID: 0}
 --- !u!81 &1946796972
 AudioListener:
   m_ObjectHideFlags: 0

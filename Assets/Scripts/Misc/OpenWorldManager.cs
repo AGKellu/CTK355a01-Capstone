@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class OpenWorldManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class OpenWorldManager : MonoBehaviour
     public GameObject questEntryPrefab;
     //public List<QuestProgress> newQuests = new();
     public List<QuestProgress> activateQuests = new();
+    public GameObject Asteroid;
     //show available quests in openworld manager 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -39,6 +41,7 @@ public class OpenWorldManager : MonoBehaviour
     {
         encounterTimer = Random.Range(600, 7200);
     }
+    
     public void SpawnEnemy()
     {
         //int AmountofFighters = Random.Range(0, 6);
@@ -108,7 +111,7 @@ public class OpenWorldManager : MonoBehaviour
         //}
         if (questListContent.childCount != activateQuests.Count)
         {
-            Debug.Log("show a quest");
+            //Debug.Log("show a quest");
             foreach (var quest in activateQuests)
             {
 
@@ -126,12 +129,20 @@ public class OpenWorldManager : MonoBehaviour
                 
                 if (IsQuestActive(questListContent.transform.GetChild(i).gameObject.GetComponent<QuestController>().quest.questID))
                 {
-                    Quest quest = questListContent.transform.GetChild(i).gameObject.GetComponent<QuestController>().quest;
-                    foreach(var objective in quest.objectives)
-                    {
-                        
-                    Debug.Log(objective.currentAmount);
-                    }
+                    //Quest quest = questListContent.transform.GetChild(i).gameObject.GetComponent<QuestController>().quest;
+                    GameObject QuestEntry = questListContent.transform.GetChild(i).gameObject;
+                    //for (int i = 0; i < objectiveList.childCount; i++)
+                    QuestEntry.GetComponent<QuestController>().quest = activateQuests[i].quest;
+                    QuestEntry.GetComponent<QuestController>().UpdateQuest();
+                    //{
+                    
+                        //GameObject objTextGO = objectiveList.GetChild(i);
+                        //TMP_Text objText = objTextGO.GetComponent<TMP_Text>();
+                        //objText.text = $"{objective.description} ({objective.currentAmount}/{objective.requiredAmount})";
+
+                    //}
+
+
                 }
                // Debug.Log(questListContent.transform.GetChild(i).gameObject.GetComponent<QuestController>().quest.questName);
             }
@@ -145,7 +156,7 @@ public class OpenWorldManager : MonoBehaviour
     }
     public void RespawnPlayer()
     {
-        //SaveLoad.instance.Load();
+        SaveLoad.instance.Load();
         //Load
     }
     // Update is called once per frame
@@ -193,12 +204,14 @@ public class OpenWorldManager : MonoBehaviour
         SceneManager.UnloadSceneAsync(currentScene);
         PlayerShipMovement.instance.gameObject.GetComponent<AudioSource>().Pause();
         Cursor.lockState = CursorLockMode.Confined;
+        
         PlayerShipMovement.instance.gameObject.SetActive(false);
         //StationUIMasterScript SUIMS = GameObject.FindGameObjectWithTag("Canvas").GetComponent<StationUIMasterScript>();
     }
     public IEnumerator StationUnload()
     {
         Scene currentScene = SceneManager.GetActiveScene();
+        TimeFromStation = 0;
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("ProtoScene", LoadSceneMode.Additive);
         while (!asyncLoad.isDone)
         {
@@ -263,10 +276,28 @@ public class OpenWorldManager : MonoBehaviour
                 if (IsQuestActive(questListContent.transform.GetChild(i).gameObject.GetComponent<QuestController>().quest.questID))
                 {
                     Quest questPrefab = questListContent.transform.GetChild(i).gameObject.GetComponent<QuestController>().quest;
-                    foreach(var objective in questPrefab.objectives)
+                    questPrefab = quest.quest;
+                    foreach (var objective in questPrefab.objectives)
                     {
-                        objective.currentAmount++;  
-                    //Debug.Log(objective.currentAmount);
+                        if (QuestID == objective.objectiveID)
+                        {
+
+                            objective.currentAmount++;
+                            if (objective.isCompleted)
+                            {
+                                Debug.Log("Completed " + objective.objectiveID);
+                                //make a small check box on the side o feach objective prefab
+                            }
+                        }
+                        //Debug.Log(objective.currentAmount);
+                        //Debug.Log(objective.currentAmount);
+                    }
+                    foreach(var objective in quest.objectives)
+                    {
+                        if (QuestID == objective.objectiveID)
+                        {
+                            objective.currentAmount++;
+                        }
                     }
                 }
                // Debug.Log(questListContent.transform.GetChild(i).gameObject.GetComponent<QuestController>().quest.questName);

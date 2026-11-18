@@ -107,7 +107,9 @@ public class StationUIMasterScript : MonoBehaviour
         {
             GameObject entry = Instantiate(questEntryPrefab, questListContent);
             entry.GetComponent<QuestController>().Roll();
-            
+            LayoutRebuilder.ForceRebuildLayoutImmediate(questListContent.GetComponent<RectTransform>());
+
+            //questListContent.GetComponent<VerticalLayoutGroup>().childScaleWidth.height = true;
             /*TMP_Text questNameText = entry.transform.Find("QuestNameText").GetComponent<TMP_Text>();
             Transform objectiveList = entry.transform.Find("ObjectiveList");
             questNameText.text = quest.quest.name;

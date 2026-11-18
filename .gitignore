@@ -105,3 +105,11 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+Assets/Misc/factions.txt.meta
+Assets/inHouseModels/shipEngineSeperate.blend.meta
+Assets/inHouseModels/physicalBumpTest.blend.meta
+Assets/inHouseModels/gunBase.fbx.meta
+Assets/inHouseModels/gunBase.blend.meta
+Assets/inHouseModels/den of boredom/robotBuddy.blend.meta
+Assets/inHouseModels/bumpMapTest.fbx.meta
+Assets/inHouseModels/bigAstroidProto.fbx.meta

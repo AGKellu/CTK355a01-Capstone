@@ -6,6 +6,7 @@ public class AmmunitionMoveScript : MonoBehaviour
     public string OwnerFaction;
     //private Rigidbody AmmoRB;
     public Vector3 forward;
+    public bool Fake;
     public GameObject target;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,12 +15,12 @@ public class AmmunitionMoveScript : MonoBehaviour
         transform.parent = null;
         if (target != null)
         {
-           // Debug.Log(target.name);
+            // Debug.Log(target.name);
         }
-        else 
+        else
         {
-            
-        Destroy(gameObject, 5);
+
+            Destroy(gameObject, 5);
         }
         //transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
@@ -31,7 +32,7 @@ public class AmmunitionMoveScript : MonoBehaviour
         if (target != null)
         {
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, (target.transform.position- transform.position), speed * Time.deltaTime, 0.0f);
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, (target.transform.position - transform.position), speed * Time.deltaTime, 0.0f);
             //Vector3 newDirection = Vector3.RotateTowards(transform.forward, (target.transform.position - transform.position), 0.0f);
             transform.rotation = Quaternion.LookRotation(newDirection);
         }
@@ -40,54 +41,58 @@ public class AmmunitionMoveScript : MonoBehaviour
 
             transform.position += forward * speed * Time.deltaTime;
         }
-        
+
         //speed = 2.5f;
     }
     void OnTriggerEnter(Collider coll)
     {
-        if (coll.gameObject.CompareTag("Enemy"))
+        if (!Fake)
         {
-            if (OwnerFaction == coll.gameObject.tag)
+            if (coll.gameObject.CompareTag("Enemy"))
             {
-
-            }
-            else
-            {
-                if (target != null)
+                if (OwnerFaction == coll.gameObject.tag)
                 {
-                    coll.gameObject.GetComponent<MasterScript>().TakeDamage(2);
-                    Destroy(gameObject);
+
                 }
                 else
                 {
-                    
-                coll.gameObject.GetComponent<MasterScript>().TakeDamage(1);
-                Destroy(gameObject);
+                    if (target != null)
+                    {
+                        coll.gameObject.GetComponent<MasterScript>().TakeDamage(2);
+                        Destroy(gameObject);
+                    }
+                    else
+                    {
+
+                        coll.gameObject.GetComponent<MasterScript>().TakeDamage(1);
+                        Destroy(gameObject);
+                    }
+
                 }
-            
+                //Destroy(coll.gameObject);
+                //Debug.Log("Shot enemy");
             }
-            //Destroy(coll.gameObject);
-            //Debug.Log("Shot enemy");
-        }
-        else if (coll.gameObject.CompareTag("Player"))
-        {
-            if (OwnerFaction == coll.gameObject.tag)
+            else if (coll.gameObject.CompareTag("Player"))
             {
+                if (OwnerFaction == coll.gameObject.tag)
+                {
 
-            }
-            else
-            {
-                coll.gameObject.GetComponent<PlayerShipMovement>().TakeDamage(1);
-                Destroy(gameObject);
+                }
+                else
+                {
+                    coll.gameObject.GetComponent<PlayerShipMovement>().TakeDamage(1);
+                    Destroy(gameObject);
 
+                }
             }
         }
+
     }
     void OnDestroy()
     {
         //if (PlayerShipMovement.instance.MissileLoaded)
         //{
-          //  PlayerShipMovement.instance.MissileLoaded  = 
+        //  PlayerShipMovement.instance.MissileLoaded  = 
         //}
     }
 }

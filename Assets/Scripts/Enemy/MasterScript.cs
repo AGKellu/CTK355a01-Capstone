@@ -19,6 +19,7 @@ public class MasterScript : MonoBehaviour
     public GameObject EnemyForward;
     public bool Buzzer, Engineer, Bomber;
     public GameObject Camera;
+    public bool dead;
     public bool seeking;
     [SerializeField] private Vector3 newPos;
     [SerializeField] private AudioClip[] clips;
@@ -37,162 +38,185 @@ public class MasterScript : MonoBehaviour
     {
         //Below code is commented to stop movement for testing
         //Camera.transform.position = Vector3.MoveTowards(Camera.transform.position, transform.position, Time.deltaTime * 20); 
-        if (Buzzer)
+        if (!dead)
         {
-            //if the distance to the player is less than minimumDistance, rotate towards player, shoot, run away, which means do above while reloading  
-            //Fake being erratic, roll a d6 to pick a direction (up, down, left, right, forward, backward)
-            //roll between 50 and 100, shoot a raycast for that
-            //add distance to transform.forward position to check the end of the ray 
-            // move that many spaces forward, repeat
-            //if raycast hits something, subtract from that, movetowards 
-
-
-            /* transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
-
-             Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
-             transform.rotation = Quaternion.LookRotation(newRotate);
-             if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
-             {
-                 if (!onCoolDown)
-                 {
-                     if (!PlayerShipMovement.instance.dead) // If player is alive
-                     {
-
-                       //  Shoot();
-                     }
-                 }
-             }*/
-
-            /* if (!seeking)
-             {
-                 Seek();
-             }
-
-             */
-
-
-            if (PlayerShipMovement.instance != null)
+            if (Buzzer)
             {
-                if (Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position) < TriggerDistance)
-                {
-                    if (!onCoolDown)
-                    {
-                        if (!PlayerShipMovement.instance.dead) // If player is alive
-                        {
-                            transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+                //if the distance to the player is less than minimumDistance, rotate towards player, shoot, run away, which means do above while reloading  
+                //Fake being erratic, roll a d6 to pick a direction (up, down, left, right, forward, backward)
+                //roll between 50 and 100, shoot a raycast for that
+                //add distance to transform.forward position to check the end of the ray 
+                // move that many spaces forward, repeat
+                //if raycast hits something, subtract from that, movetowards 
 
-                            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
-                            transform.rotation = Quaternion.LookRotation(newRotate);
-                            Shoot();
-                        }
 
-                    }
-                    else
-                    {
-                        /* transform.position = Vector3.MoveTowards(transform.position, newPos, speed * 2);
-                         if (!seeking)
+                /* transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+
+                 Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
+                 transform.rotation = Quaternion.LookRotation(newRotate);
+                 if ((Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position)) < TriggerDistance) // If player is within firing distance, shoot
+                 {
+                     if (!onCoolDown)
+                     {
+                         if (!PlayerShipMovement.instance.dead) // If player is alive
                          {
-                             Seek();
+
+                           //  Shoot();
                          }
-                         if (Vector3.Distance(transform.position, newPos) < 0.01)
-                         {
-                             seeking = true;
-                             //Debug.Log("moved to new seeking position\n" + newPos);
-                             seeking = false;
-                         }*/
-                        transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
-                        Debug.Log(gameObject.name);
-                        //Moves towards player
-                        //once it gets close to player, stop rotating, 
-                        //once it gets far away from player, but not too far, rotate, repeat;
-                        if (Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position) < TriggerDistance / 2)
+                     }
+                 }*/
+
+                /* if (!seeking)
+                 {
+                     Seek();
+                 }
+
+                 */
+
+
+                if (PlayerShipMovement.instance != null)
+                {
+                    if (Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position) < TriggerDistance)
+                    {
+                        if (!onCoolDown)
                         {
+                            if (!PlayerShipMovement.instance.dead) // If player is alive
+                            {
+                                transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+
+                                Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f); // Angle towards the player
+                                transform.rotation = Quaternion.LookRotation(newRotate);
+                                Shoot();
+                            }
 
                         }
                         else
                         {
-                            Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f);
-                        transform.rotation = Quaternion.LookRotation(newRotate);
+                            /* transform.position = Vector3.MoveTowards(transform.position, newPos, speed * 2);
+                             if (!seeking)
+                             {
+                                 Seek();
+                             }
+                             if (Vector3.Distance(transform.position, newPos) < 0.01)
+                             {
+                                 seeking = true;
+                                 //Debug.Log("moved to new seeking position\n" + newPos);
+                                 seeking = false;
+                             }*/
+                            transform.position = Vector3.MoveTowards(transform.position, EnemyForward.transform.position, speed * 2);
+                            Debug.Log(gameObject.name);
+                            //Moves towards player
+                            //once it gets close to player, stop rotating, 
+                            //once it gets far away from player, but not too far, rotate, repeat;
+                            if (Vector3.Distance(transform.position, PlayerShipMovement.instance.gameObject.transform.position) < TriggerDistance / 2)
+                            {
+
+                            }
+                            else
+                            {
+                                Vector3 newRotate = Vector3.RotateTowards(transform.forward, (PlayerShipMovement.instance.gameObject.transform.position - transform.position), 1f, 0.0f);
+                                transform.rotation = Quaternion.LookRotation(newRotate);
+                            }
+
                         }
-                        
+                    }
+                    else
+                    {
+
+                        transform.position = Vector3.MoveTowards(transform.position, newPos, speed * 2);
+                        if (!seeking)
+                        {
+
+                            Seek();
+                        }
+                        if (Vector3.Distance(transform.position, newPos) < 0.01)
+                        {
+                            seeking = true;
+                            //Debug.Log("moved to new seeking position\n" + newPos);
+                            seeking = false;
+                        }
+                    }
+
+                    if (PlayerShipMovement.instance.TargetedFighter == gameObject)
+                    {
+                        if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
+                        {
+                            CanvasUIHolder.instance.TargetFighterStill.SetActive(true);
+                        }
+                        Camera.SetActive(true);
+                        //Camera.transform.position = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
+                        //CanvasUIHolder.instance.TargetFighterStill.GetComponent<RawImage>().texture = TargetFighterStillTexture;
+                        //CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
+                        float dist = Mathf.Round(Vector3.Distance(PlayerShipMovement.instance.gameObject.transform.position, transform.position)) * 10f / 10f;
+
+                        CanvasUIHolder.instance.TargetFighterDistance.text = dist.ToString("0.0");
+
+                        if (!TargetedOverlay.activeSelf)
+                        {
+                            TargetedOverlay.SetActive(true);
+                        }
+                    }
+                    else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
+                    {
+                        if (TargetedOverlay.activeSelf)
+                        {
+                            TargetedOverlay.SetActive(false);
+                        }
                     }
                 }
-                else
-                {
 
-                    transform.position = Vector3.MoveTowards(transform.position, newPos, speed * 2);
-                    if (!seeking)
-                    {
-
-                        Seek();
-                    }
-                    if (Vector3.Distance(transform.position, newPos) < 0.01)
-                    {
-                        seeking = true;
-                        //Debug.Log("moved to new seeking position\n" + newPos);
-                        seeking = false;
-                    }
-                }
-
-                if (PlayerShipMovement.instance.TargetedFighter == gameObject)
-                {
-                    if (!CanvasUIHolder.instance.TargetFighterStill.activeSelf)
-                    {
-                        CanvasUIHolder.instance.TargetFighterStill.SetActive(true);
-                    }
-                    Camera.SetActive(true);
-                    //Camera.transform.position = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
-                    //CanvasUIHolder.instance.TargetFighterStill.GetComponent<RawImage>().texture = TargetFighterStillTexture;
-                    //CanvasUIHolder.instance.TargetFighterStill.GetComponent<Image>().sprite = TargetFighterStill;
-                    float dist = Mathf.Round(Vector3.Distance(PlayerShipMovement.instance.gameObject.transform.position, transform.position)) * 10f / 10f;
-
-                    CanvasUIHolder.instance.TargetFighterDistance.text = dist.ToString("0.0");
-
-                    if (!TargetedOverlay.activeSelf)
-                    {
-                        TargetedOverlay.SetActive(true);
-                    }
-                }
-                else if (PlayerShipMovement.instance.TargetedFighter != gameObject)
-                {
-                    if (TargetedOverlay.activeSelf)
-                    {
-                        TargetedOverlay.SetActive(false);
-                    }
-                }
             }
+            //if (Engineer)
+            //{
+
+            //}
 
         }
-        //if (Engineer)
-        //{
-
-        //}
 
     }
     public void TakeDamage(int Damage)
     {
-        //Debug.Log(Damage);
-        Health -= Damage;
-        //Debug.Log(Health);
-        if (PlayerShipMovement.instance.TargetedFighter == gameObject)
+        if (!dead)
         {
-            CanvasUIHolder.instance.TargetFighterHealth.text = (Health / 2).ToString();
+            //Debug.Log(Damage);
+            Health -= Damage;
             //Debug.Log(Health);
-
-        }
-        if (Health <= 0)
-        {
-            OpenWorldManager.instance.QuestObjectiveChecker(ID);
-            //Debug.Log(OpenWorldManager.instance.activateQuests[0].quest.objectives.objectiveID);
-            if (PlayerShipMovement.instance.TargetedFighter == gameObject) // Go to PlayerShipMovement.cs and check if TargetedFighter is an object
+            if (PlayerShipMovement.instance.TargetedFighter == gameObject)
             {
-                DeTarget(); // Destroy enemy sprites and reset targeting
+                //CanvasUIHolder.instance.TargetFighterHealth.text = (Health / 2).ToString();
+
+                CanvasUIHolder.instance.TargetFighterHealth.text = (Health).ToString();
+                //Debug.Log(Health);
+
             }
-            int ClipInt = Random.Range(0, 4);
-            gameObject.GetComponent<AudioSource>().clip = (clips[ClipInt]);
-            gameObject.GetComponent<AudioSource>().Play();
-            Destroy(gameObject);
+            if (Health <= 0)
+            {
+                
+
+                OpenWorldManager.instance.QuestObjectiveChecker(ID);
+                //Debug.Log(OpenWorldManager.instance.activateQuests[0].quest.objectives.objectiveID);
+                if (PlayerShipMovement.instance.TargetedFighter == gameObject) // Go to PlayerShipMovement.cs and check if TargetedFighter is an object
+                {
+                    DeTarget(); // Destroy enemy sprites and reset targeting
+                }
+                int ClipInt = Random.Range(0, 4);
+                gameObject.GetComponent<AudioSource>().clip = (clips[ClipInt]);
+                dead = true;
+                StartCoroutine(PlayDeath());
+
+            }
         }
+
+    }
+    IEnumerator PlayDeath()
+    {
+        gameObject.GetComponent<AudioSource>().Play();
+        while (gameObject.GetComponent<AudioSource>().isPlaying)
+        {
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
     public void Shoot()
     {
@@ -209,7 +233,7 @@ public class MasterScript : MonoBehaviour
     }
     void Seek()
     {
-        int Rotation = Random.Range(0, 5);
+        int Rotation = Random.Range(0, 6);
         switch (Rotation)
         {
             case 0:

@@ -17,7 +17,9 @@ MonoBehaviour:
   questDescription: Kill 10 Pirates for 100 Credits.
   objectives:
   - objectiveID: 1
-    description: Kill 10 Pirates.
+    objectiveNPCName: 
+    description: Kill 10 Pirates for 100 Credits.
     type: 0
-    requiredAmount: 10
+    requiredAmount: 1
     currentAmount: 0
+  questPosition: {x: 0, y: 0, z: 0}

@@ -430,6 +430,7 @@ public class PlayerShipMovement : MonoBehaviour
                 Laser1.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
                 //GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, Quaternion.Euler(Xrotat, 0, 0));
                 GameObject Laser2 = Instantiate(LaserPrefab, LaserPoint2.transform.position, LaserPoint2.transform.rotation);
+                Laser2.GetComponent<AmmunitionMoveScript>().Fake = true;
                 Laser2.GetComponent<AmmunitionMoveScript>().forward = transform.forward;
             }
             else if (Projectile == "Missile")
@@ -453,7 +454,7 @@ public class PlayerShipMovement : MonoBehaviour
                     TargetedFighter.GetComponent<MasterScript>().DeTarget();
                    
                     }
-                    TargetedFighter.GetComponent<MasterScript>().DeTarget();
+                    //TargetedFighter.GetComponent<MasterScript>().DeTarget();
                 }
 
             }
@@ -520,7 +521,9 @@ public class PlayerShipMovement : MonoBehaviour
                     {
                         //TargetedFighter.GetComponent<MasterScript>().Camera = GameObject.FindGameObjectWithTag("EnemyCamera");
                         TargetedFighter = hit.collider.gameObject;
-                        CanvasUIHolder.instance.TargetFighterHealth.text = (TargetedFighter.GetComponent<MasterScript>().Health / 2).ToString();
+                        //CanvasUIHolder.instance.TargetFighterHealth.text = (TargetedFighter.GetComponent<MasterScript>().Health / 2).ToString();
+                        CanvasUIHolder.instance.TargetFighterHealth.text = (TargetedFighter.GetComponent<MasterScript>().Health).ToString();
+
                         Targeted = true;
                         //GameObject.FindGameObjectWithTag("EnemyCamera").transform.position = new Vector3(TargetedFighter.transform.position.x, TargetedFighter.transform.position.y + 5, TargetedFighter.transform.position.z);
                     }
