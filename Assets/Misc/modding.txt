@@ -1,0 +1,2 @@
+music - Check a folder, run it through an array
+ships - check for a folder, if the fbx models have an object titled "cockpitView" we use that as a camera anchor to enable first person viewing using the ship. We could have a modding button the the main menu which takes you to an empty void which can take in fbx files the player could set a camera anchor point and save the fbx as a ship object

@@ -1,2 +1,8 @@
 semi-deep purple: Looks nice and pleasing to the eyes - RGB: 77 22 190
 blue background: Could be good for the UI background - RGB: 35 14 239
+
+
+cyan: Good for streaks or striking accents to a craft. Could do nicely on the buzzer for a high-tech feel - RGB: 36 251 255
+
+bright red: stands out and goes decently well with a lot of colors. Could pair this with the cyan on the buzzer - RGB: 224 0 0
+
