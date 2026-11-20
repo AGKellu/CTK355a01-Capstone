@@ -1,0 +1,2 @@
+semi-deep purple: Looks nice and pleasing to the eyes - RGB: 77 22 190
+blue background: Could be good for the UI background - RGB: 35 14 239
